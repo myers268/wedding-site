@@ -1,15 +1,171 @@
 @import "tailwindcss" source(".");
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+@font-face {
+  font-family: "NothingYouCouldDo";
+  src: url("/NothingYouCouldDo-Regular.ttf");
 }
 
-html,
+@font-face {
+  font-family: "Handstand";
+  src: url("/Handstand-rv2wL.otf");
+}
+
+@font-face {
+  font-family: "JosefinSans";
+  src: url("/JosefinSans-VariableFont_wght.ttf");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "JosefinSans";
+  src: url("/JosefinSans-Italic-VariableFont_wght.ttf");
+  font-style: italic;
+}
+
+/* @link https://utopia.fyi/type/calculator?c=320,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+:root {
+  --step--2: clamp(0.7813rem, 0.7747rem + 0.0326vw, 0.8rem);
+  --step--1: clamp(0.9375rem, 0.9158rem + 0.1087vw, 1rem);
+  --step-0: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+  --step-1: clamp(1.35rem, 1.2761rem + 0.3696vw, 1.5625rem);
+  --step-2: clamp(1.62rem, 1.5041rem + 0.5793vw, 1.9531rem);
+  --step-3: clamp(1.944rem, 1.771rem + 0.8651vw, 2.4414rem);
+  --step-4: clamp(2.3328rem, 2.0827rem + 1.2504vw, 3.0518rem);
+  --step-5: clamp(2.7994rem, 2.4462rem + 1.7658vw, 3.8147rem);
+}
+
+/* @link https://utopia.fyi/space/calculator?c=320,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6|8|12,&g=s,l,xl,12 */
+
+:root {
+  --space-3xs: clamp(0.3125rem, 0.3125rem + 0vw, 0.3125rem);
+  --space-2xs: clamp(0.5625rem, 0.5408rem + 0.1087vw, 0.625rem);
+  --space-xs: clamp(0.875rem, 0.8533rem + 0.1087vw, 0.9375rem);
+  --space-s: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+  --space-m: clamp(1.6875rem, 1.6223rem + 0.3261vw, 1.875rem);
+  --space-l: clamp(2.25rem, 2.163rem + 0.4348vw, 2.5rem);
+  --space-xl: clamp(3.375rem, 3.2446rem + 0.6522vw, 3.75rem);
+  --space-2xl: clamp(4.5rem, 4.3261rem + 0.8696vw, 5rem);
+  --space-3xl: clamp(6.75rem, 6.4891rem + 1.3043vw, 7.5rem);
+  --space-4xl: clamp(9rem, 8.6522rem + 1.7391vw, 10rem);
+  --space-5xl: clamp(13.5rem, 12.9783rem + 2.6087vw, 15rem);
+
+  /* One-up pairs */
+  --space-3xs-2xs: clamp(0.3125rem, 0.2038rem + 0.5435vw, 0.625rem);
+  --space-2xs-xs: clamp(0.5625rem, 0.4321rem + 0.6522vw, 0.9375rem);
+  --space-xs-s: clamp(0.875rem, 0.7446rem + 0.6522vw, 1.25rem);
+  --space-s-m: clamp(1.125rem, 0.8641rem + 1.3043vw, 1.875rem);
+  --space-m-l: clamp(1.6875rem, 1.4049rem + 1.413vw, 2.5rem);
+  --space-l-xl: clamp(2.25rem, 1.7283rem + 2.6087vw, 3.75rem);
+  --space-xl-2xl: clamp(3.375rem, 2.8098rem + 2.8261vw, 5rem);
+  --space-2xl-3xl: clamp(4.5rem, 3.4565rem + 5.2174vw, 7.5rem);
+  --space-3xl-4xl: clamp(6.75rem, 5.6196rem + 5.6522vw, 10rem);
+  --space-4xl-5xl: clamp(9rem, 6.913rem + 10.4348vw, 15rem);
+}
+
+@theme {
+  --font-sans: "JosefinSans", "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-handwritten: "NothingYouCouldDo", serif;
+  --font-cursive: "Handstand", sans-serif;
+
+  --color-rust-100: #B66F53;
+  --color-rust-300: #974A29;
+  --color-rust-500: #792F1B;
+  --color-rust-700: #5A2102;
+
+  --color-sage-300: #BBBBA2;
+  --color-sage-500: #78826A;
+  --color-sage-700: #2D2D12;
+
+  --color-ivory: #E1D8CC;
+  --color-ebony: #2E2B2C;
+
+  --text-fluid-xs: var(--step--2);
+  --text-fluid-sm: var(--step--1);
+  --text-fluid-base: var(--step-0);
+  --text-fluid-lg: var(--step-1);
+  --text-fluid-xl: var(--step-2);
+  --text-fluid-2xl: var(--step-3);
+  --text-fluid-3xl: var(--step-4);
+  --text-fluid-4xl: var(--step-5);
+
+  --spacing-fluid-3xs: var(--space-3xs);
+  --spacing-fluid-2xs: var(--space-2xs);
+  --spacing-fluid-xs: var(--space-xs);
+  --spacing-fluid-sm: var(--space-s);
+  --spacing-fluid-md: var(--space-m);
+  --spacing-fluid-lg: var(--space-l);
+  --spacing-fluid-xl: var(--space-xl);
+  --spacing-fluid-2xl: var(--space-2xl);
+  --spacing-fluid-3xl: var(--space-3xl);
+  --spacing-fluid-4xl: var(--space-4xl);
+  --spacing-fluid-5xl: var(--space-5xl);
+}
+
+:root {
+  --tint: rgb(from var(--color-sage-300) r g b / 25%);
+  --bg-hero:
+    linear-gradient(var(--tint), var(--tint)),
+    repeat url("/leaf-cardstock.jpg") 0% 0% / 30rem 30rem;
+  
+  background: var(--bg-hero);
+  background-color: var(--color-ivory);
+}
+
+.switcher {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.stamp {
+  --r: 8px;
+  height: 5rem;
+
+  @media screen and (min-width: 640px) {
+    --r: 10px;
+    height: 6rem;
+  }
+
+  aspect-ratio: 1.5;
+  padding: var(--r);
+  background: var(--color-stone-100);
+  mask: 
+    radial-gradient(50% 50%,#0000 66%,#000 67%) round 
+     var(--r) var(--r)/calc(2*var(--r)) calc(2*var(--r)), 
+    conic-gradient(#000 0 0) content-box;
+}
+
+.frame {
+  --_r: 0.75rem;
+  --_b-s: 0.125rem;
+
+  --radius: var(--spacing-fluid-sm);
+  --border-size: var(--spacing-fluid-3xs);
+  
+  position: relative;
+
+  & > * {
+    padding: var(--border-size);
+    mask: radial-gradient(var(--radius, var(--_r)) at var(--radius, var(--_r)) var(--radius, var(--_r)),#0000 98%,#000) calc(-1 * var(--radius, var(--_r))) calc(-1 * var(--radius, var(--_r)));
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    mask:
+      radial-gradient(var(--radius) at var(--radius) var(--radius),#0000 calc(98% - var(--border-size, --_b-s)),#000 calc(100% - var(--border-size, --_b-s)) 98%,#0000) calc(-1 * var(--radius)) calc(-1 * var(--radius)),
+      linear-gradient(90deg,#000 calc(var(--border-size, --_b-s) * 2),#0000 0) calc(-1 * var(--border-size, --_b-s)) 50% /100% calc(100% - calc(var(--radius) * 2) + var(--border-size, --_b-s)) repeat-x,
+      linear-gradient(      #000 calc(var(--border-size, --_b-s) * 2),#0000 0) 50% calc(-1 * var(--border-size, --_b-s))/calc(100% - calc(var(--radius) * 2) + var(--border-size, --_b-s)) 100% repeat-y;
+  }
+}
+
+/* html,
 body {
   @apply bg-white dark:bg-gray-950;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
-}
+} */
