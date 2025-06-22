@@ -1,6 +1,6 @@
-import { guests } from "../data/guests";
+import { guests } from "#data/guests";
 
-export type { Guest } from "../data/guests";
+export type { Guest } from "#data/guests";
 
 export interface GuestNotFoundError {
   name: "guest_not_found",

@@ -11,9 +11,9 @@
 		"typecheck": "npm run cf-typegen && react-router typegen && tsc -b"
 	},
 	"imports": {
-		"#app": "./app/*",
-		"#data": "./data/*",
-		"#services": "./services/*"
+		"#app/*": "./app/*",
+		"#data/*": "./app/data/*",
+		"#services/*": "./app/services/*"
 	},
 	"dependencies": {
 		"@epic-web/invariant": "^1.0.0",

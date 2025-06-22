@@ -1,8 +1,8 @@
 import { redirect } from "react-router";
 import type { Route } from "./+types/rsvp.attendance";
 
-import { getGuestByFullName } from "../services/guests";
-import { getUserSession } from "../services/session";
+import { getGuestByFullName } from "#services/guests";
+import { getUserSession } from "#services/session";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if user has a valid session
