@@ -1,10 +1,20 @@
+import { redirect } from "react-router";
 import type { Route } from "./+types/rsvp.attendance";
 
 import { getGuestByFullName } from "../services/guests";
+import { getUserSession } from "../services/session";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  // Read from cookie or redirect
-  const guest = await getGuestByFullName("Colby Zarger");
+  // Check if user has a valid session
+  const guestName = await getUserSession(request);
+  
+  if (!guestName) {
+    // Redirect to search page if no session
+    throw redirect("/rsvp/search");
+  }
+
+  // Fetch guest data using the name from session
+  const guest = await getGuestByFullName(guestName);
 
   return {
     guest,

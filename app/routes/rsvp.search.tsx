@@ -1,9 +1,10 @@
-import { data, isRouteErrorResponse, Outlet, redirect } from "react-router";
+import { isRouteErrorResponse, redirect } from "react-router";
 
 import type { Route } from "./+types/rsvp.search";
 
 import type { Guest } from "../services/guests";
 import { GuestNotFoundError, getGuestByFullName } from "../services/guests";
+import { createUserSession } from "../services/session";
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
@@ -19,9 +20,12 @@ export async function action({ request }: Route.ActionArgs) {
     throw e;
   });
 
+  // Create user session with guest identifier
+  const sessionCookie = await createUserSession(request, guest.fullName);
+
   throw redirect("/rsvp/attendance", {
     headers: {
-      // "Set-Cookie": "",
+      "Set-Cookie": sessionCookie,
     }
   });
 }
