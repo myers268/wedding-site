@@ -11,10 +11,13 @@ export default function Timeline() {
 
         <div className="col-span-2" />
 
-        <div className="flex flex-col items-center relative">
-          <div className="absolute w-0.5 bg-sage-500 top-0 bottom-fluid-md" />
-          <div className="flex-1" />
-          <div className="text-sage-500 sticky bottom-fluid-2xs">
+        <div className="grid *:[grid-area:1/1] relative">
+          {/* <div className="absolute w-0.5 bg-sage-500 top-0 bottom-fluid-md" /> */}
+          {/* <div className="flex-1" /> */}
+          <div className="bg-sage-500 sticky bottom-fluid-md place-self-end justify-self-center">
+            <div className="w-0.5 min-h-fluid-4xl" />
+          </div>
+          <div className="text-sage-500 sticky bottom-fluid-2xs place-self-end justify-self-center">
             <svg
               className="size-fluid-xl"
               xmlns="http://www.w3.org/2000/svg"
