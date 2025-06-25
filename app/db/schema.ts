@@ -1,19 +1,24 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, index, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
 
 // Events table
-export const events = sqliteTable("events", {
+export const event = sqliteTable("event", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
+  location: text("location").notNull(),
+  timestamp: integer("timestamp").notNull(),
+  description: text("description").notNull(),
 });
 
 // Guests table (for both primary and additional guests)
-export const guests = sqliteTable("guests", {
+export const guest = sqliteTable("guest", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   fullName: text("full_name").notNull(),
   isPrimary: integer("is_primary", { mode: "boolean" }).notNull().default(true),
   primaryGuestId: integer("primary_guest_id"),
-});
+}, (table) => [
+  index("idx_guest_primary").on(table.primaryGuestId),
+]);
 
 // Event attendance junction table
 export const eventAttendance = sqliteTable("event_attendance", {
@@ -21,20 +26,24 @@ export const eventAttendance = sqliteTable("event_attendance", {
   guestId: integer("guest_id").notNull(),
   eventId: integer("event_id").notNull(),
   attending: integer("attending", { mode: "boolean" }).notNull().default(false),
-});
+}, (table) => [
+  index("idx_attendance_guest").on(table.guestId),
+  index("idx_attendance_event").on(table.eventId),
+  uniqueIndex("idx_guest_event_attendance").on(table.guestId, table.eventId),
+]);
 
 // Relations
-export const eventsRelations = relations(events, ({ many }) => ({
+export const eventsRelations = relations(event, ({ many }) => ({
   attendance: many(eventAttendance),
 }));
 
-export const guestsRelations = relations(guests, ({ one, many }) => ({
-  primaryGuest: one(guests, {
-    fields: [guests.primaryGuestId],
-    references: [guests.id],
+export const guestsRelations = relations(guest, ({ one, many }) => ({
+  primaryGuest: one(guest, {
+    fields: [guest.primaryGuestId],
+    references: [guest.id],
     relationName: "primaryGuest",
   }),
-  additionalGuests: many(guests, {
+  additionalGuests: many(guest, {
     relationName: "primaryGuest",
   }),
   attendance: many(eventAttendance),
@@ -43,23 +52,23 @@ export const guestsRelations = relations(guests, ({ one, many }) => ({
 export const eventAttendanceRelations = relations(
   eventAttendance,
   ({ one }) => ({
-    guest: one(guests, {
+    guest: one(guest, {
       fields: [eventAttendance.guestId],
-      references: [guests.id],
+      references: [guest.id],
     }),
-    event: one(events, {
+    event: one(event, {
       fields: [eventAttendance.eventId],
-      references: [events.id],
+      references: [event.id],
     }),
   })
 );
 
 // Type exports for use in your application
-export type Event = typeof events.$inferSelect;
-export type NewEvent = typeof events.$inferInsert;
+export type Event = typeof event.$inferSelect;
+export type NewEvent = typeof event.$inferInsert;
 
-export type Guest = typeof guests.$inferSelect;
-export type NewGuest = typeof guests.$inferInsert;
+export type Guest = typeof guest.$inferSelect;
+export type NewGuest = typeof guest.$inferInsert;
 
 export type EventAttendance = typeof eventAttendance.$inferSelect;
 export type NewEventAttendance = typeof eventAttendance.$inferInsert;

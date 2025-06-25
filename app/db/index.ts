@@ -1,60 +1,72 @@
 import { drizzle } from "drizzle-orm/d1";
 import * as schema from "./schema";
 
-// This will be injected by Cloudflare Workers environment
 export function createDb(d1Database: D1Database) {
   return drizzle(d1Database, { schema });
 }
 
-// Type for the database instance
 export type Database = ReturnType<typeof createDb>;
 
 // Utility functions for seeding data
 export async function seedEvents(db: Database) {
-  const existingEvents = await db.select().from(schema.events);
+  const existingEvents = await db.select().from(schema.event);
 
   if (existingEvents.length === 0) {
     await db
-      .insert(schema.events)
+      .insert(schema.event)
       .values([
-        { name: "Wedding" },
-        { name: "Indiana Wedding Shower" },
-        { name: "Washington Wedding Shower" },
+        {
+          name: "Wedding",
+          location: "123 Main St, Washington, D.C. 22201",
+          timestamp: new Date(2026, 0, 2, 17, 30, 0).getTime(),
+          description: "",
+        },
+        {
+          name: "Indiana Wedding Shower",
+          location: "456 Country Rd, Kokomo, IN 46902",
+          timestamp: new Date(2025, 7, 9, 14, 0, 0).getTime(),
+          description: "",
+        },
+        {
+          name: "Washington Wedding Shower",
+          location: "642 River Blvd, Longview, WA 99999",
+          timestamp: new Date(2025, 11, 9, 16, 0, 0).getTime(),
+          description: "",
+        },
       ]);
   }
 }
 
 export async function seedGuests(db: Database) {
-  const existingGuests = await db.select().from(schema.guests);
+  const existingGuests = await db.select().from(schema.guest);
 
   if (existingGuests.length === 0) {
     // Insert primary guests
     const [colby] = await db
-      .insert(schema.guests)
+      .insert(schema.guest)
       .values({
         fullName: "Colby Zarger",
         isPrimary: true,
       })
       .returning();
 
-    const [phil] = await db
-      .insert(schema.guests)
+    await db
+      .insert(schema.guest)
       .values({
         fullName: "Phil Shaheen",
         isPrimary: true,
-      })
-      .returning();
+      });
 
     // Insert additional guest for Colby
-    await db.insert(schema.guests).values({
+    await db.insert(schema.guest).values({
       fullName: "Sally Tucker",
       isPrimary: false,
       primaryGuestId: colby.id,
     });
 
     // Create default attendance records for all events
-    const events = await db.select().from(schema.events);
-    const guests = await db.select().from(schema.guests);
+    const events = await db.select().from(schema.event);
+    const guests = await db.select().from(schema.guest);
 
     const attendanceRecords = [];
     for (const guest of guests) {

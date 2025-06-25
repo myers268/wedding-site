@@ -19,9 +19,9 @@
 	"d1_databases": [
 		{
 			"binding": "WEDDING_DB",
-			"database_name": "wedding_db",
-			"database_id": "YOUR_DB_ID",
-			"migrations_dir": "drizzle/migrations"
+			"database_name": "prd-wedding-store",
+      "database_id": "e90a4874-ad6f-45ed-838a-f7c817119371",
+			"migrations_dir": "migrations"
 		}
 	]
 	/**

@@ -1,13 +1,13 @@
 import { redirect, useFetcher } from "react-router";
 import type { Route } from "./+types/rsvp.attendance";
 
-import { getGuestByFullName } from "#services/guests";
+import { getEventAttendanceByGuestIds, getGuestByFullName, getPartyByPrimaryGuestId } from "#services/guests";
 import { getUserSession } from "#services/session";
-import { z } from "zod";
+import { z } from "zod/v4";
 
 const ATTENDING = "attending";
-const GUEST = "guest";
-const EVENT = "event";
+const GUEST = "guest-id";
+const EVENT = "event-id";
 
 const eventSchema = z.object({
   [ATTENDING]: z.coerce.boolean(),
@@ -23,29 +23,26 @@ export async function action({ request }: Route.ActionArgs) {
   return null;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  // Check if user has a valid session
+export async function loader({ request, context }: Route.LoaderArgs) {
   const guestName = await getUserSession(request);
 
   if (!guestName) {
-    // Redirect to search page if no session
     throw redirect("/rsvp/search");
   }
 
-  // Fetch guest data using the name from session
-  const guest = await getGuestByFullName(guestName);
+  const db = context.cloudflare.db;
+
+  const guest = await getGuestByFullName(db, guestName);
+  const party = await getPartyByPrimaryGuestId(db, guest.id);
+  const attendance = await getEventAttendanceByGuestIds(db, party.map(p => p.id));
 
   return {
-    guest,
+    party,
+    attendance,
   };
 }
 
 export default function Attendance({ loaderData }: Route.ComponentProps) {
-  const allGuests = [
-    loaderData.guest,
-    ...loaderData.guest.additionalGuests.guests,
-  ];
-
   const eventsFetcher = useFetcher();
 
   return (
@@ -53,10 +50,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
       <h2 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center">
         Guests
       </h2>
-      <div className="bg-stone-100 border-2 border-double w-full max-w-[50ch] p-fluid-sm font-handwritten">
-        {loaderData.guest.fullName}
-      </div>
-      {loaderData.guest.additionalGuests.guests.map((guest) => (
+      {loaderData.party.map((guest) => (
         <div
           key={guest.fullName}
           className="bg-stone-100 border-2 border-double w-full max-w-[50ch] p-fluid-sm font-handwritten"
@@ -67,19 +61,19 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
       <h2 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center">
         Events
       </h2>
-      {loaderData.guest.attendance.map((attendance) => (
+      {loaderData.attendance.map((event) => (
         <div
-          key={attendance.event.name}
+          key={event.name}
           className="grid gap-fluid-sm bg-stone-100 border-2 border-double w-full max-w-[50ch] p-fluid-sm font-handwritten"
         >
           <div>
-            <h3 className="text-fluid-xl">{attendance.event.name}</h3>
-            <div>{attendance.event.location}</div>
-            <div>{new Date(attendance.event.timestamp).toLocaleString()}</div>
+            <h3 className="text-fluid-xl">{event.name}</h3>
+            <div>{event.location}</div>
+            <div>{new Date(event.timestamp).toLocaleString()}</div>
           </div>
           <ul>
-            {allGuests.map((guest) => (
-              <li key={guest.fullName}>
+            {event.attendance.map((guest) => (
+              <li key={guest.id}>
                 <eventsFetcher.Form
                   method="POST"
                   onChange={(event) => {
@@ -91,16 +85,12 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                       className="accent-sage-500 size-fluid-sm"
                       type="checkbox"
                       name={ATTENDING}
-                      defaultChecked={
-                        guest.attendance.find(
-                          (x) => x.event.name === attendance.event.name
-                        )?.attending
-                      }
+                      defaultChecked={guest.attending}
                     />
                     {guest.fullName}
                   </label>
-                  <input className="hidden" aria-hidden readOnly name={GUEST} value={guest.fullName} />
-                  <input className="hidden" aria-hidden readOnly name={EVENT} value={attendance.event.location} />
+                  <input className="hidden" aria-hidden readOnly name={GUEST} value={guest.id} />
+                  <input className="hidden" aria-hidden readOnly name={EVENT} value={event.id} />
                 </eventsFetcher.Form>
               </li>
             ))}
