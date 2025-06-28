@@ -1,5 +1,16 @@
-import { sqliteTable, text, integer, index, uniqueIndex } from "drizzle-orm/sqlite-core";
-import { relations } from "drizzle-orm";
+import {
+  sqliteTable,
+  text,
+  integer,
+  index,
+  uniqueIndex,
+  check,
+} from "drizzle-orm/sqlite-core";
+import { relations, sql } from "drizzle-orm";
+
+// Enum values for attendance
+export const ATTENDANCE_VALUES = ["UNKNOWN", "YES", "NO"] as const;
+export type AttendanceStatus = (typeof ATTENDANCE_VALUES)[number];
 
 // Events table
 export const event = sqliteTable("event", {
@@ -11,26 +22,41 @@ export const event = sqliteTable("event", {
 });
 
 // Guests table (for both primary and additional guests)
-export const guest = sqliteTable("guest", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  fullName: text("full_name").notNull(),
-  isPrimary: integer("is_primary", { mode: "boolean" }).notNull().default(true),
-  primaryGuestId: integer("primary_guest_id"),
-}, (table) => [
-  index("idx_guest_primary").on(table.primaryGuestId),
-]);
+export const guest = sqliteTable(
+  "guest",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    fullName: text("full_name").notNull(),
+    isPrimary: integer("is_primary", { mode: "boolean" })
+      .notNull()
+      .default(true),
+    primaryGuestId: integer("primary_guest_id"),
+  },
+  (table) => [index("idx_guest_primary").on(table.primaryGuestId)]
+);
 
 // Event attendance junction table
-export const eventAttendance = sqliteTable("event_attendance", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  guestId: integer("guest_id").notNull(),
-  eventId: integer("event_id").notNull(),
-  attending: integer("attending", { mode: "boolean" }).notNull().default(false),
-}, (table) => [
-  index("idx_attendance_guest").on(table.guestId),
-  index("idx_attendance_event").on(table.eventId),
-  uniqueIndex("idx_guest_event_attendance").on(table.guestId, table.eventId),
-]);
+export const eventAttendance = sqliteTable(
+  "event_attendance",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    guestId: integer("guest_id").notNull(),
+    eventId: integer("event_id").notNull(),
+    attending: text("attending").notNull().default("UNKNOWN"),
+  },
+  (table) => [
+    index("idx_attendance_guest").on(table.guestId),
+    index("idx_attendance_event").on(table.eventId),
+    uniqueIndex("idx_guest_event_attendance").on(table.guestId, table.eventId),
+    check(
+      "attending_enum",
+      sql`attending IN (${sql.join(
+        ATTENDANCE_VALUES.map((v) => sql`${v}`),
+        sql`, `
+      )})`
+    ),
+  ]
+);
 
 // Relations
 export const eventsRelations = relations(event, ({ many }) => ({

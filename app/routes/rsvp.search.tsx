@@ -2,16 +2,15 @@ import { isRouteErrorResponse, redirect } from "react-router";
 
 import type { Route } from "./+types/rsvp.search";
 
-import { GuestNotFoundError, getGuestByFullName } from "#services/guests";
+import { GuestNotFoundError, getPrimaryGuestByFullName } from "#services/guests";
 import { createUserSession } from "#services/session";
 
 export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
   const name = formData.get("name")?.toString() ?? "";
 
-  const guest = await getGuestByFullName(context.cloudflare.db, name).catch((e) => {
+  const guest = await getPrimaryGuestByFullName(context.cloudflare.db, name).catch((e) => {
     if (e instanceof GuestNotFoundError) {
-      // console.log(e);
       throw new Response(
         "Oops! Make sure you type your name exactly as it is written on your invitation."
       );

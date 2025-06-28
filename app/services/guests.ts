@@ -1,6 +1,7 @@
-import { eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, or } from "drizzle-orm";
 import type { Database } from "#db/index";
 import * as schema from "#db/schema";
+import type { AttendanceStatus } from "#db/schema";
 
 // export type Guest = {
 //   fullName: string,
@@ -27,23 +28,23 @@ import * as schema from "#db/schema";
 // }
 
 export interface GuestNotFoundError {
-  name: "guest_not_found",
-  message: "Guest not found.",
+  name: "guest_not_found";
+  message: "Guest not found.";
 }
 
 export class GuestNotFoundError extends Error {
   constructor() {
     super();
     this.name = "guest_not_found";
-    this.message = "Guest not found."
+    this.message = "Guest not found.";
   }
 }
 
-export async function getGuestByFullName(db: Database, name: string) {
+export async function getPrimaryGuestByFullName(db: Database, name: string) {
   const primaryGuest = await db
     .select()
     .from(schema.guest)
-    .where(eq(schema.guest.fullName, name))
+    .where(and(eq(schema.guest.fullName, name), eq(schema.guest.isPrimary, true)))
     .limit(1);
 
   if (primaryGuest.length === 0) {
@@ -52,10 +53,6 @@ export async function getGuestByFullName(db: Database, name: string) {
 
   const guest = primaryGuest[0];
 
-  if (!guest.isPrimary) {
-    throw new GuestNotFoundError();
-  }
-
   return guest;
 }
 
@@ -63,7 +60,7 @@ export async function getPartyByPrimaryGuestId(db: Database, guestId: number) {
   const party = await db
     .select()
     .from(schema.guest)
-    .where(eq(schema.guest.primaryGuestId, guestId));
+    .where(or(eq(schema.guest.primaryGuestId, guestId), eq(schema.guest.id, guestId)));
 
   return party;
 }
@@ -77,11 +74,14 @@ type EventAttendanceWithGuests = {
   attendance: {
     id: number;
     fullName: string;
-    attending: boolean;
+    attending: AttendanceStatus;
   }[];
-}
+};
 
-export async function getEventAttendanceByGuestIds(db: Database, guestIds: number[]): Promise<EventAttendanceWithGuests[]> {
+export async function getEventAttendanceByGuestIds(
+  db: Database,
+  guestIds: number[]
+): Promise<EventAttendanceWithGuests[]> {
   const events = await db.select().from(schema.event);
   const attendanceRecords = await db
     .select()
@@ -111,7 +111,7 @@ export async function getEventAttendanceByGuestIds(db: Database, guestIds: numbe
       eventAttendance.attendance.push({
         id: record.guest.id,
         fullName: record.guest.fullName,
-        attending: record.event_attendance.attending,
+        attending: record.event_attendance.attending as AttendanceStatus,
       });
     }
   }

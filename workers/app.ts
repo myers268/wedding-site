@@ -1,4 +1,4 @@
-import { createDb } from "#db/index";
+import { createDb, createDbWithSeed } from "#db/index";
 import type { Database } from "#db/index";
 import { createRequestHandler } from "react-router";
 
@@ -19,7 +19,7 @@ const requestHandler = createRequestHandler(
 
 export default {
   async fetch(request, env, ctx) {
-    const db = createDb(env.WEDDING_DB);
+    const db = await createDbWithSeed(env.WEDDING_DB);
     return requestHandler(request, {
       cloudflare: { env, ctx, db },
     });
