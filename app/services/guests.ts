@@ -1,7 +1,7 @@
 import { and, eq, inArray, or } from "drizzle-orm";
 import type { Database } from "#db/index";
 import * as schema from "#db/schema";
-import type { AttendanceStatus } from "#db/schema";
+import { lower, type AttendanceStatus } from "#db/schema";
 
 // export type Guest = {
 //   fullName: string,
@@ -44,7 +44,9 @@ export async function getPrimaryGuestByFullName(db: Database, name: string) {
   const primaryGuest = await db
     .select()
     .from(schema.guest)
-    .where(and(eq(schema.guest.fullName, name), eq(schema.guest.isPrimary, true)))
+    .where(
+      and(eq(lower(schema.guest.fullName), name.trim().toLowerCase()), eq(schema.guest.isPrimary, true))
+    )
     .limit(1);
 
   if (primaryGuest.length === 0) {
@@ -60,7 +62,9 @@ export async function getPartyByPrimaryGuestId(db: Database, guestId: number) {
   const party = await db
     .select()
     .from(schema.guest)
-    .where(or(eq(schema.guest.primaryGuestId, guestId), eq(schema.guest.id, guestId)));
+    .where(
+      or(eq(schema.guest.primaryGuestId, guestId), eq(schema.guest.id, guestId))
+    );
 
   return party;
 }
@@ -117,4 +121,23 @@ export async function getEventAttendanceByGuestIds(
   }
 
   return Object.values(attendanceMap);
+}
+
+type UpdateAttendance = {
+  guestId: number;
+  eventId: number;
+  attending: AttendanceStatus;
+};
+
+export async function updateGuestAttendance(
+  db: Database,
+  update: UpdateAttendance
+) {
+  await db
+    .insert(schema.eventAttendance)
+    .values(update)
+    .onConflictDoUpdate({
+      target: [schema.eventAttendance.guestId, schema.eventAttendance.eventId],
+      set: { attending: update.attending },
+    });
 }

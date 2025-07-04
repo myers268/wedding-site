@@ -5,24 +5,34 @@ import {
   getEventAttendanceByGuestIds,
   getPrimaryGuestByFullName,
   getPartyByPrimaryGuestId,
+  updateGuestAttendance,
 } from "#services/guests";
 import { getUserSession } from "#services/session";
 import { z } from "zod/v4";
 
 const ATTENDING = "attending";
-const GUEST = "guest-id";
-const EVENT = "event-id";
+const GUEST = "guestId";
+const EVENT = "eventId";
 
-const eventSchema = z.object({
-  [ATTENDING]: z.enum(["UNKNOWN", "YES", "NO"]).default("UNKNOWN"),
-  [GUEST]: z.string(),
-  [EVENT]: z.string(),
+const attendingValues = {
+  YES: "YES",
+  NO: "NO",
+} as const;
+
+const attendingSchema = z.object({
+  [ATTENDING]: z.enum(Object.values(attendingValues)),
+  [GUEST]: z.coerce.number(),
+  [EVENT]: z.coerce.number(),
 });
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
-  const event = eventSchema.parse(Object.fromEntries(formData.entries()));
-  console.log(event);
+  const event = attendingSchema.parse(Object.fromEntries(formData.entries()));
+
+  await updateGuestAttendance(
+    context.cloudflare.db,
+    event,
+  );
 
   return null;
 }
@@ -40,7 +50,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const party = await getPartyByPrimaryGuestId(db, guest.id);
   const attendance = await getEventAttendanceByGuestIds(
     db,
-    party.map((p) => p.id)
+    party.sort((a) => a.id === guest.id ? -1 : 1).map((p) => p.id)
   );
 
   return {
@@ -91,18 +101,18 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                     eventsFetcher.submit(event.currentTarget);
                   }}
                 >
-                  <label className="flex items-center gap-fluid-xs select-none">
-                    <span className="min-w-0">{guest.fullName}</span>
+                  <label className="select-none">
                     <select
-                      className="ml-auto text-right"
+                      aria-label="Select attendance status"
                       name={ATTENDING}
                       defaultValue={guest.attending}
+                      className="w-full text-wrap"
                     >
                       <option disabled value="UNKNOWN">
-                        Attending?
+                        Is {guest.fullName} attending?
                       </option>
-                      <option value="YES">Yes</option>
-                      <option value="NO">No</option>
+                      <option value={attendingValues.YES}>{guest.fullName} is attending</option>
+                      <option value={attendingValues.NO}>{guest.fullName} is NOT attending</option>
                     </select>
                   </label>
                   <input

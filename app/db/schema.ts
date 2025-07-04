@@ -5,8 +5,9 @@ import {
   index,
   uniqueIndex,
   check,
+  type AnySQLiteColumn,
 } from "drizzle-orm/sqlite-core";
-import { relations, sql } from "drizzle-orm";
+import { relations, type SQL, sql } from "drizzle-orm";
 
 // Enum values for attendance
 export const ATTENDANCE_VALUES = ["UNKNOWN", "YES", "NO"] as const;
@@ -26,13 +27,16 @@ export const guest = sqliteTable(
   "guest",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
-    fullName: text("full_name").notNull(),
+    fullName: text("full_name").notNull().unique(),
     isPrimary: integer("is_primary", { mode: "boolean" })
       .notNull()
       .default(true),
     primaryGuestId: integer("primary_guest_id"),
   },
-  (table) => [index("idx_guest_primary").on(table.primaryGuestId)]
+  (table) => [
+    index("idx_guest_primary").on(table.primaryGuestId),
+    uniqueIndex("idx_guest_fullname").on(lower(table.fullName)),
+  ]
 );
 
 // Event attendance junction table
@@ -88,6 +92,10 @@ export const eventAttendanceRelations = relations(
     }),
   })
 );
+
+export function lower(value: AnySQLiteColumn): SQL {
+  return sql`lower(${value})`;
+}
 
 // Type exports for use in your application
 export type Event = typeof event.$inferSelect;
