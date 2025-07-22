@@ -1,7 +1,7 @@
 import { href, Link } from "react-router";
 import type { Route } from "./+types/home";
 
-export function meta({ }: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
   return [
     { title: "Zack & Julia" },
     { name: "description", content: "Zack & Julia are getting married!" },
@@ -30,8 +30,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <div className="bg-stone-50 w-px @max-[60rem]:hidden" />
         <div className="-mx-fluid-xs p-fluid-lg @max-[60rem]:p-fluid-sm place-self-center grid place-items-center basis-[calc((var(--switcher-threshold)-100%)*9999)]">
           <div className="bg-stone-100 p-fluid-xl text-fluid-lg w-full *:min-w-fluid-5xl *:border-b *:border-stone-500 grid gap-fluid-md font-handwritten">
-            <Link to={href("/")}>About</Link>
-            <Link to={href("/")}>RSVP</Link>
+            <Link to={href("/about")}>About</Link>
+            <Link to={href("/rsvp/search")}>RSVP</Link>
             <Link to={href("/timeline")}>Timeline</Link>
             <Link to={href("/")}>Registry</Link>
             <Link to={href("/")}>Travel & stay</Link>

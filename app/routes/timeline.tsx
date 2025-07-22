@@ -1,43 +1,19 @@
 export default function Timeline() {
   return (
-    <div className="grid grid-cols-[min-content_1fr_1fr] gap-fluid-xs p-fluid-2xs h-full min-h-dvh">
-      {/* <div className="py-fluid-xs h-full min-h-dvh flex flex-col items-center gap-fluid-xs"> */}
-        <div
-          className="text-fluid-3xl font-extralight tracking-[0.5em] text-sage-700 text-shadow-2xs text-shadow-sage-300/50 pr-fluid-2xs pt-fluid-sm"
-          style={{ writingMode: "vertical-lr" }}
-        >
-          TIMELINE
-        </div>
+    <div className="grid grid-cols-[min-content_1fr_2fr] gap-fluid-xs p-fluid-2xs h-full min-h-dvh">
+      <div
+        className="text-fluid-3xl font-extralight tracking-[0.5em] text-sage-700 text-shadow-2xs text-shadow-sage-300/50 pr-fluid-2xs pt-fluid-sm"
+        style={{ writingMode: "vertical-lr" }}
+      >
+        TIMELINE
+      </div>
 
-        <div className="col-span-2" />
+      <div className="col-span-2" />
 
-        <div className="grid *:[grid-area:1/1] relative">
-          {/* <div className="absolute w-0.5 bg-sage-500 top-0 bottom-fluid-md" /> */}
-          {/* <div className="flex-1" /> */}
-          <div className="bg-sage-500 sticky bottom-fluid-md place-self-end justify-self-center">
-            <div className="w-0.5 min-h-fluid-4xl" />
-          </div>
-          <div className="text-sage-500 sticky bottom-fluid-2xs place-self-end justify-self-center">
-            <svg
-              className="size-fluid-xl"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 -1 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="0.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-          </div>
-        </div>
-      {/* </div> */}
-
-      {/* Empty first row for the right column */}
-      {/* <div className="col-span-2" /> */}
+      {/* Vertical line */}
+      <div className="grid *:[grid-area:1/1] relative">
+        <div className="absolute w-0.5 bg-sage-500 top-0 bottom-0 justify-self-center" />
+      </div>
 
       {/* Timeline rows */}
       <div className="text-fluid-base grid grid-cols-subgrid col-start-2 col-span-2 gap-fluid-xs justify-start min-h-[calc(100dvh-var(--spacing-fluid-2xs)*2)] auto-rows-min">

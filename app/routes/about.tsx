@@ -59,38 +59,39 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-sage-300">
+      <section className="bg-sage-300 @container">
         <h2 className="font-cursive text-fluid-2xl leading-fluid-3xl text-center">
           The Wedding Party
         </h2>
-        <div className="grid grid-cols-3 bg-linear-to-b from-sage-300 to-sage-500 to-90%">
+        <div className="grid grid-cols-3 @max-[60rem]:max-w-[50ch] mx-auto">
           {col.map((x) => {
             return (
               <div
                 key={x.id}
-                className="group col-span-3 grid grid-cols-subgrid grid-flow-col p-fluid-xs gap-fluid-xs"
+                className="group col-span-3 grid grid-cols-subgrid grid-rows-2 *:row-span-2 @max-[60rem]:*:row-span-1 grid-flow-col p-fluid-xs gap-fluid-xs"
               >
-                <div className="frame before:bg-white group-even:-col-end-1 drop-shadow-sm drop-shadow-sage-700/20">
+                <div className="frame before:bg-white group-even:-col-end-1 @max-[60rem]:col-span-3 drop-shadow-sm drop-shadow-sage-700/20">
                   <img
                     src="/mirage.jpg"
                     className="aspect-square object-cover"
                   />
                 </div>
-                <div className="col-span-2">
-                Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque
-          faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi
-          pretium tellus duis convallis. Tempus leo eu aenean sed diam urna
-          tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas.
-          Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut
-          hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent
-          per conubia nostra inceptos himenaeos. Lorem ipsum dolor sit amet
-          consectetur adipiscing elit. Quisque faucibus ex sapien vitae
-          pellentesque sem placerat. In id cursus mi pretium tellus duis
-          convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
-          fringilla lacus nec metus bibendum egestas. Iaculis massa nisl
-          malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class
-          aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos
-          himenaeos.
+                <div className="col-span-2 @max-[60rem]:col-span-3">
+                  Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                  Quisque faucibus ex sapien vitae pellentesque sem placerat. In
+                  id cursus mi pretium tellus duis convallis. Tempus leo eu
+                  aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus
+                  nec metus bibendum egestas. Iaculis massa nisl malesuada
+                  lacinia integer nunc posuere. Ut hendrerit semper vel class
+                  aptent taciti sociosqu. Ad litora torquent per conubia nostra
+                  inceptos himenaeos. Lorem ipsum dolor sit amet consectetur
+                  adipiscing elit. Quisque faucibus ex sapien vitae pellentesque
+                  sem placerat. In id cursus mi pretium tellus duis convallis.
+                  Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
+                  fringilla lacus nec metus bibendum egestas. Iaculis massa nisl
+                  malesuada lacinia integer nunc posuere. Ut hendrerit semper
+                  vel class aptent taciti sociosqu. Ad litora torquent per
+                  conubia nostra inceptos himenaeos.
                 </div>
               </div>
             );

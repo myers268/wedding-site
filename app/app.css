@@ -113,11 +113,6 @@
   background-color: var(--color-ivory);
 }
 
-.switcher {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .stamp {
   --r: 8px;
   height: 5rem;
