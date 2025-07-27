@@ -13,6 +13,12 @@ import { relations, type SQL, sql } from "drizzle-orm";
 export const ATTENDANCE_VALUES = ["UNKNOWN", "YES", "NO"] as const;
 export type AttendanceStatus = (typeof ATTENDANCE_VALUES)[number];
 
+// Party table
+export const party = sqliteTable("party", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name"),
+});
+
 // Events table
 export const event = sqliteTable("event", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -31,10 +37,13 @@ export const guest = sqliteTable(
     isPrimary: integer("is_primary", { mode: "boolean" })
       .notNull()
       .default(true),
-    primaryGuestId: integer("primary_guest_id"),
+    isKid: integer("is_kid", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    partyId: integer("party_id"),
   },
   (table) => [
-    index("idx_guest_primary").on(table.primaryGuestId),
+    index("idx_guest_party").on(table.partyId),
     uniqueIndex("idx_guest_fullname").on(lower(table.fullName)),
   ]
 );
@@ -67,14 +76,14 @@ export const eventsRelations = relations(event, ({ many }) => ({
   attendance: many(eventAttendance),
 }));
 
+export const partyRelations = relations(party, ({ many }) => ({
+  guests: many(guest),
+}));
+
 export const guestsRelations = relations(guest, ({ one, many }) => ({
-  primaryGuest: one(guest, {
-    fields: [guest.primaryGuestId],
-    references: [guest.id],
-    relationName: "primaryGuest",
-  }),
-  additionalGuests: many(guest, {
-    relationName: "primaryGuest",
+  party: one(party, {
+    fields: [guest.partyId],
+    references: [party.id],
   }),
   attendance: many(eventAttendance),
 }));
@@ -100,6 +109,9 @@ export function lower(value: AnySQLiteColumn): SQL {
 // Type exports for use in your application
 export type Event = typeof event.$inferSelect;
 export type NewEvent = typeof event.$inferInsert;
+
+export type Party = typeof party.$inferSelect;
+export type NewParty = typeof party.$inferInsert;
 
 export type Guest = typeof guest.$inferSelect;
 export type NewGuest = typeof guest.$inferInsert;

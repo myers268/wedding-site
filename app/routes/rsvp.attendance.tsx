@@ -4,7 +4,7 @@ import type { Route } from "./+types/rsvp.attendance";
 import {
   getEventAttendanceByGuestIds,
   getPrimaryGuestByFullName,
-  getPartyByPrimaryGuestId,
+  getPartyBytGuestId,
   updateGuestAttendance,
 } from "#services/guests";
 import { getUserSession } from "#services/session";
@@ -29,10 +29,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
   const event = attendingSchema.parse(Object.fromEntries(formData.entries()));
 
-  await updateGuestAttendance(
-    context.cloudflare.db,
-    event,
-  );
+  await updateGuestAttendance(context.cloudflare.db, event);
 
   return null;
 }
@@ -47,10 +44,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const db = context.cloudflare.db;
 
   const guest = await getPrimaryGuestByFullName(db, guestName);
-  const party = await getPartyByPrimaryGuestId(db, guest.id);
+  const party = await getPartyBytGuestId(db, guest.partyId!); // TODO: Handle case where partyId is null
   const attendance = await getEventAttendanceByGuestIds(
     db,
-    party.sort((a) => a.id === guest.id ? -1 : 1).map((p) => p.id)
+    party.sort((a) => (a.id === guest.id ? -1 : 1)).map((p) => p.id)
   );
 
   return {
@@ -70,7 +67,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
       {loaderData.party.map((guest) => (
         <div
           key={guest.fullName}
-          className="bg-stone-100 border-2 border-double w-full max-w-[50ch] p-fluid-sm font-handwritten"
+          className="bg-stone-100 border-3 border-double w-full max-w-[50ch] p-fluid-sm font-handwritten"
         >
           {guest.fullName}
         </div>
@@ -81,7 +78,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
       {loaderData.attendance.map((event) => (
         <div
           key={event.name}
-          className="grid gap-fluid-sm bg-stone-100 border-2 border-double w-full max-w-[50ch] p-fluid-sm font-light"
+          className="grid gap-fluid-sm bg-stone-100 border-3 border-double w-full max-w-[50ch] p-fluid-sm font-light"
         >
           <div>
             <h3 className="text-fluid-xl">{event.name}</h3>
@@ -94,15 +91,17 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
           </div>
           <ul>
             {event.attendance.map((guest) => (
-              <li key={guest.id} className="font-handwritten">
+              <li key={guest.id} className="font-handwritten flex gap-fluid-md">
                 <eventsFetcher.Form
+                  className="contents"
                   method="POST"
                   onChange={(event) => {
                     eventsFetcher.submit(event.currentTarget);
                   }}
                 >
-                  <label className="select-none">
-                    <select
+                  <label className="select-none mr-auto">
+                    {guest.fullName}
+                    {/* <select
                       aria-label="Select attendance status"
                       name={ATTENDING}
                       defaultValue={guest.attending}
@@ -113,7 +112,27 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                       </option>
                       <option value={attendingValues.YES}>{guest.fullName} is attending</option>
                       <option value={attendingValues.NO}>{guest.fullName} is NOT attending</option>
-                    </select>
+                    </select> */}
+                  </label>
+                  <label className="flex gap-fluid-2xs items-center">
+                    <input
+                      type="radio"
+                      radioGroup="attendance"
+                      name={ATTENDING}
+                      value={attendingValues.YES}
+                      defaultChecked={guest.attending === "YES" ? true : undefined}
+                    />
+                    Yes
+                  </label>
+                  <label className="flex gap-fluid-2xs items-center">
+                    <input
+                      type="radio"
+                      radioGroup="attendance"
+                      name={ATTENDING}
+                      value={attendingValues.NO}
+                      defaultChecked={guest.attending === "NO" ? true : undefined}
+                    />
+                    No
                   </label>
                   <input
                     className="hidden"

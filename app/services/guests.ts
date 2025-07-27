@@ -58,12 +58,12 @@ export async function getPrimaryGuestByFullName(db: Database, name: string) {
   return guest;
 }
 
-export async function getPartyByPrimaryGuestId(db: Database, guestId: number) {
+export async function getPartyBytGuestId(db: Database, partyId: number) {
   const party = await db
     .select()
     .from(schema.guest)
     .where(
-      or(eq(schema.guest.primaryGuestId, guestId), eq(schema.guest.id, guestId))
+      eq(schema.guest.partyId, partyId)
     );
 
   return party;

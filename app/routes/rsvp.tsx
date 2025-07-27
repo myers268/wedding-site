@@ -5,7 +5,7 @@ import type { Route } from "../routes/+types/rsvp";
 export default function Rsvp() {
   return (
     <>
-      <div className="bg-stone-100 border-2 border-double w-full max-w-[50ch]">
+      <div className="bg-stone-100 border-3 border-double w-full max-w-[50ch]">
         <h1 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center">
           RSVP
         </h1>

@@ -46,25 +46,37 @@ export async function seedGuests(db: Database) {
   const existingGuests = await db.select().from(schema.guest);
 
   if (existingGuests.length === 0) {
-    // Insert primary guests
-    const [colby] = await db
-      .insert(schema.guest)
+    const [zargerParty] = await db
+      .insert(schema.party)
       .values({
+        name: "Zargers",
+      })
+      .returning();
+
+    await db.insert(schema.guest).values([
+      {
         fullName: "Colby Zarger",
         isPrimary: true,
+        partyId: zargerParty.id,
+      },
+      {
+        fullName: "Sally Tucker",
+        isPrimary: true,
+        partyId: zargerParty.id,
+      },
+    ]);
+
+    const [shaheenParty] = await db
+      .insert(schema.party)
+      .values({
+        name: "Phil Shaheen",
       })
       .returning();
 
     await db.insert(schema.guest).values({
       fullName: "Phil Shaheen",
       isPrimary: true,
-    });
-
-    // Insert additional guest for Colby
-    await db.insert(schema.guest).values({
-      fullName: "Sally Tucker",
-      isPrimary: false,
-      primaryGuestId: colby.id,
+      partyId: shaheenParty.id,
     });
 
     // Create default attendance records for all events
