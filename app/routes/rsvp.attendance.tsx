@@ -89,9 +89,12 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
               {event.location}
             </div>
           </div>
-          <ul>
+          <ul className="min-w-0 w-full overflow-auto">
             {event.attendance.map((guest) => (
-              <li key={guest.id} className="font-handwritten flex gap-fluid-md">
+              <li
+                key={guest.id}
+                className="font-handwritten flex gap-fluid-md select-none"
+              >
                 <eventsFetcher.Form
                   className="contents"
                   method="POST"
@@ -99,39 +102,61 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                     eventsFetcher.submit(event.currentTarget);
                   }}
                 >
-                  <label className="select-none mr-auto">
+                  <span className="break-words min-w-0 mr-auto">
                     {guest.fullName}
-                    {/* <select
-                      aria-label="Select attendance status"
-                      name={ATTENDING}
-                      defaultValue={guest.attending}
-                      className="w-full text-wrap"
-                    >
-                      <option disabled value="UNKNOWN">
-                        Is {guest.fullName} attending?
-                      </option>
-                      <option value={attendingValues.YES}>{guest.fullName} is attending</option>
-                      <option value={attendingValues.NO}>{guest.fullName} is NOT attending</option>
-                    </select> */}
-                  </label>
-                  <label className="flex gap-fluid-2xs items-center">
+                  </span>
+                  <label className="group flex gap-fluid-2xs items-center">
                     <input
                       type="radio"
                       radioGroup="attendance"
                       name={ATTENDING}
                       value={attendingValues.YES}
-                      defaultChecked={guest.attending === "YES" ? true : undefined}
+                      defaultChecked={
+                        guest.attending === "YES" ? true : undefined
+                      }
+                      className="sr-only"
                     />
+                    <div className="relative w-5 h-5 border-sage-500 border-3 border-double bg-white group-hover:border-sage-700 transition-colors group-has-[*:focus-visible]:ring-2 ring-sage-500">
+                      <svg
+                        className="absolute inset-0 w-full h-full stroke-sage-700 opacity-0 group-has-[:checked]:opacity-100 transition-opacity"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                      >
+                        <path
+                          d="M3 8L6 11L11 3.5"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
                     Yes
                   </label>
-                  <label className="flex gap-fluid-2xs items-center">
+                  <label className="group flex gap-fluid-2xs items-center">
                     <input
                       type="radio"
                       radioGroup="attendance"
                       name={ATTENDING}
                       value={attendingValues.NO}
-                      defaultChecked={guest.attending === "NO" ? true : undefined}
+                      defaultChecked={
+                        guest.attending === "NO" ? true : undefined
+                      }
+                      className="sr-only"
                     />
+                    <div className="relative w-5 h-5 border-sage-500 border-3 border-double bg-white group-hover:border-sage-700 transition-colors group-has-[*:focus-visible]:ring-2 ring-sage-500">
+                      <svg
+                        className="absolute inset-0 w-full h-full stroke-rust-300 opacity-0 group-has-[:checked]:opacity-100 transition-opacity"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                      >
+                        <path
+                          d="M3 3L11 11M11 3L3 11"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
                     No
                   </label>
                   <input
