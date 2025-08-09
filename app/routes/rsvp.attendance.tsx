@@ -89,7 +89,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
               {event.location}
             </div>
           </div>
-          <ul className="min-w-0 w-full overflow-auto">
+          <ul className="min-w-0 w-full overflow-auto grid gap-2">
             {event.attendance.map((guest) => (
               <li
                 key={guest.id}
