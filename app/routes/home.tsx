@@ -1,5 +1,7 @@
 import { href, Link } from "react-router";
 import type { Route } from "./+types/home";
+import horizontalPostcard from "/postcard-horizontal.svg";
+import verticalPostcard from "/postcard-vertical.svg";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,28 +17,40 @@ export function loader({ context }: Route.LoaderArgs) {
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <div className="h-screen grid grid-rows-[min-content_1fr] p-fluid-xs gap-fluid-xs text-stone-800">
-      <img src="/cherry-blossoms.jpg" className="stamp justify-self-end" />
-      <div className="flex flex-wrap gap-fluid-xs @container [--switcher-threshold:60rem]">
-        <div className="py-fluid-md grow-2 text-center grid gap-fluid-lg basis-[calc((var(--switcher-threshold)-100%)*9999)]">
-          <div className="font-sans text-pretty text-fluid-lg mt-auto">
-            JOIN US FOR THE WEDDING OF
-          </div>
-          <div className="font-cursive text-fluid-4xl">
-            <div>Zackary Myers</div>
-            <div>&</div>
-            <div>Julia Wygant</div>
-          </div>
-        </div>
-        <div className="bg-stone-50 w-px @max-[60rem]:hidden" />
-        <div className="-mx-fluid-xs p-fluid-lg @max-[60rem]:p-fluid-sm place-self-center grid place-items-center basis-[calc((var(--switcher-threshold)-100%)*9999)]">
-          <div className="bg-stone-100 p-fluid-xl text-fluid-lg w-full *:min-w-fluid-5xl *:border-b *:border-stone-500 grid gap-fluid-md font-handwritten">
-            <Link to={href("/about")}>About</Link>
-            <Link to={href("/rsvp/search")}>RSVP</Link>
-            <Link to={href("/timeline")}>Timeline</Link>
-            <Link to={href("/")}>Registry</Link>
-            <Link to={href("/")}>Travel & stay</Link>
-          </div>
-        </div>
+      <div className="@container [--switcher-threshold:60rem] grid grid-cols-1 gap-fluid-xs relative">
+        <nav className="text-fluid-lg sticky top-fluid-xs bg-stone-100 p-fluid-xs pt-fluid-sm border-3 border-double">
+          <ul className="flex flex-wrap justify-around *:grow *:max-w-min font-light">
+            <li>
+              <Link to={href("/rsvp")}>RSVP</Link>
+            </li>
+            {/* <li className="px-fluid-2xs font-light">/</li> */}
+            <li>
+              <Link to={href("/about")}>About</Link>
+            </li>
+            {/* <li className="px-fluid-2xs font-light">/</li> */}
+            <li>
+              <Link to={href("/timeline")}>Timeline</Link>
+            </li>
+            {/* <li className="px-fluid-2xs font-light">/</li> */}
+            <li>
+              <Link to={href("/registry")}>Registry</Link>
+            </li>
+            {/* <li className="px-fluid-2xs font-light">/</li> */}
+            <li>
+              <Link to={href("/travel")} className="whitespace-nowrap">Travel & Stay</Link>
+            </li>
+          </ul>
+        </nav>
+        <img
+          src={verticalPostcard}
+          alt="Postcard"
+          className="border-3 border-double border-white shadow @min-[60rem]:hidden"
+        />
+        <img
+          src={horizontalPostcard}
+          alt="Postcard"
+          className="border-3 border-double border-white shadow @max-[60rem]:hidden"
+        />
       </div>
     </div>
   );
