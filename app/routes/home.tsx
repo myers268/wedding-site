@@ -3,7 +3,10 @@ import type { Route } from "./+types/home";
 import horizontalPostcard from "/postcard-horizontal.svg";
 import verticalPostcard from "/postcard-vertical.svg";
 
-const navigationLinks = [
+const navigationLinks: Array<{
+  href: Parameters<typeof href>[0];
+  label: string;
+}> = [
   { href: "/rsvp", label: "RSVP" },
   { href: "/about", label: "About" },
   { href: "/timeline", label: "Timeline" },
