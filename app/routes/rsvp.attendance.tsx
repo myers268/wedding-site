@@ -116,9 +116,9 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                       }
                       className="sr-only"
                     />
-                    <div className="relative w-5 h-5 border-sage-500 border-3 border-double bg-white group-hover:border-sage-700 transition-colors group-has-[*:focus-visible]:ring-2 ring-sage-500">
+                    <div className="w-5 h-5 border-sage-500 border-3 border-double bg-white group-hover:border-sage-700 transition-colors group-has-[*:focus-visible]:ring-2 ring-sage-500">
                       <svg
-                        className="absolute inset-0 w-full h-full stroke-sage-700 opacity-0 group-has-[:checked]:opacity-100 transition-opacity"
+                        className="w-full h-full stroke-sage-700 opacity-0 group-has-[:checked]:opacity-100 transition-opacity"
                         viewBox="0 0 14 14"
                         fill="none"
                       >
@@ -143,9 +143,9 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                       }
                       className="sr-only"
                     />
-                    <div className="relative w-5 h-5 border-sage-500 border-3 border-double bg-white group-hover:border-sage-700 transition-colors group-has-[*:focus-visible]:ring-2 ring-sage-500">
+                    <div className="w-5 h-5 border-sage-500 border-3 border-double bg-white group-hover:border-sage-700 transition-colors group-has-[*:focus-visible]:ring-2 ring-sage-500">
                       <svg
-                        className="absolute inset-0 w-full h-full stroke-rust-300 opacity-0 group-has-[:checked]:opacity-100 transition-opacity"
+                        className="w-full h-full stroke-rust-300 opacity-0 group-has-[:checked]:opacity-100 transition-opacity"
                         viewBox="0 0 14 14"
                         fill="none"
                       >
