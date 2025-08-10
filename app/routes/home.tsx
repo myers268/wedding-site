@@ -3,6 +3,14 @@ import type { Route } from "./+types/home";
 import horizontalPostcard from "/postcard-horizontal.svg";
 import verticalPostcard from "/postcard-vertical.svg";
 
+const navigationLinks = [
+  { href: "/rsvp", label: "RSVP" },
+  { href: "/about", label: "About" },
+  { href: "/timeline", label: "Timeline" },
+  { href: "/registry", label: "Registry" },
+  { href: "/travel", label: "Travel & Stay" },
+];
+
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Zack & Julia" },
@@ -21,23 +29,13 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <nav className="text-fluid-base sticky top-fluid-xs bg-stone-100 p-fluid-xs pt-fluid-sm border-3 border-double">
           {/* Desktop navigation - visible on larger screens */}
           <ul className="@max-[32rem]:hidden flex flex-wrap justify-around *:grow *:max-w-min font-light">
-            <li>
-              <Link to={href("/rsvp")}>RSVP</Link>
-            </li>
-            <li>
-              <Link to={href("/about")}>About</Link>
-            </li>
-            <li>
-              <Link to={href("/timeline")}>Timeline</Link>
-            </li>
-            <li>
-              <Link to={href("/registry")}>Registry</Link>
-            </li>
-            <li>
-              <Link to={href("/travel")} className="whitespace-nowrap">
-                Travel & Stay
-              </Link>
-            </li>
+            {navigationLinks.map((link) => (
+              <li key={link.href}>
+                <Link to={link.href} className="whitespace-nowrap">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
 
           {/* Mobile hamburger menu - visible on smaller screens */}
@@ -67,61 +65,19 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               className="p-fluid-xs backdrop:bg-black/20 backdrop:backdrop-blur-sm animate-in fade-in w-full bg-transparent"
             >
               <ul className="flex flex-col divide-y font-light border-3 border-double bg-stone-100 shadow-md">
-                <li>
-                  <Link
-                    to={href("/rsvp")}
-                    className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors"
-                    onClick={() =>
-                      document.getElementById("mobile-menu")?.hidePopover()
-                    }
-                  >
-                    RSVP
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={href("/about")}
-                    className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors"
-                    onClick={() =>
-                      document.getElementById("mobile-menu")?.hidePopover()
-                    }
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={href("/timeline")}
-                    className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors"
-                    onClick={() =>
-                      document.getElementById("mobile-menu")?.hidePopover()
-                    }
-                  >
-                    Timeline
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={href("/registry")}
-                    className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors"
-                    onClick={() =>
-                      document.getElementById("mobile-menu")?.hidePopover()
-                    }
-                  >
-                    Registry
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={href("/travel")}
-                    className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors whitespace-nowrap"
-                    onClick={() =>
-                      document.getElementById("mobile-menu")?.hidePopover()
-                    }
-                  >
-                    Travel & Stay
-                  </Link>
-                </li>
+                {navigationLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      to={link.href}
+                      className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors whitespace-nowrap"
+                      onClick={() =>
+                        document.getElementById("mobile-menu")?.hidePopover()
+                      }
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
