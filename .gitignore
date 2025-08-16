@@ -12,3 +12,5 @@
 .wrangler
 .dev.vars*
 
+// Alchemy
+/.alchemy/

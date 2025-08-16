@@ -6,13 +6,17 @@
     "app/**/.server/**/*",
     "app/**/.client/**/*",
     "workers/**/*",
-    "worker-configuration.d.ts"
+    // "worker-configuration.d.ts"
   ],
   "compilerOptions": {
     "composite": true,
     "strict": true,
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["@cloudflare/workers-types", "vite/client"],
+    "types": [
+      "vite/client",
+      "@cloudflare/workers-types",
+      "./types/env.d.ts"
+    ],
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",

@@ -19,7 +19,7 @@ const requestHandler = createRequestHandler(
 
 export default {
   async fetch(request, env, ctx) {
-    const db = await createDbWithSeed(env.WEDDING_DB);
+    const db = await createDbWithSeed(env.DB);
     return requestHandler(request, {
       cloudflare: { env, ctx, db },
     });
