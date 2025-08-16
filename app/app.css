@@ -112,6 +112,8 @@
   
   background: var(--bg-hero);
   background-color: var(--color-ivory);
+
+  scrollbar-gutter: stable both-edges;
 }
 
 .stamp {

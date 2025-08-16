@@ -1,10 +1,10 @@
-import { href, Link, Outlet } from "react-router";
+import { href, NavLink, Outlet } from "react-router";
 
 const navigationLinks: Array<{
   href: Parameters<typeof href>[0];
   label: string;
 }> = [
-  // { href: "/", label: "Home" },
+  { href: "/", label: "Home" },
   { href: "/rsvp", label: "RSVP" },
   { href: "/about", label: "About" },
   { href: "/timeline", label: "Timeline" },
@@ -20,9 +20,12 @@ export default function Layout() {
         <ul className="@max-[32rem]:hidden flex flex-wrap justify-around *:grow *:max-w-min font-light">
           {navigationLinks.map((link) => (
             <li key={link.href}>
-              <Link to={link.href} className="whitespace-nowrap">
+              <NavLink
+                to={link.href}
+                className="whitespace-nowrap [.active]:underline"
+              >
                 {link.label}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
@@ -56,15 +59,15 @@ export default function Layout() {
             <ul className="flex flex-col divide-y font-light border-3 border-double bg-stone-100 shadow-md">
               {navigationLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
+                  <NavLink
                     to={link.href}
-                    className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors whitespace-nowrap"
+                    className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors whitespace-nowrap [.active]:underline"
                     onClick={() =>
                       document.getElementById("mobile-menu")?.hidePopover()
                     }
                   >
                     {link.label}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>

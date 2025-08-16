@@ -6,14 +6,13 @@
     "nodejs_compat",
     "nodejs_compat_populate_process_env"
   ],
-  "assets": { "directory": "build/client", "binding": "ASSETS" },
   "d1_databases": [
     {
       "binding": "DB",
-      "database_id": "eeaf78ff-db2d-49a0-a0b6-c5e679da927a",
+      "database_id": "db",
       "database_name": "registry-store",
       "migrations_dir": "./migrations",
-      "preview_database_id": "eeaf78ff-db2d-49a0-a0b6-c5e679da927a"
+      "preview_database_id": "db"
     }
   ]
 }
