@@ -12,7 +12,9 @@ const database = await D1Database("db", {
 
 export const worker = await ReactRouter("wedding-site", {
   main: "workers/app.ts",
-  command: "bun run build",
+  build: {
+    command: "bun run build",
+  },
   bindings: {
     DB: database,
   },

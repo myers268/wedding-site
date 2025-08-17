@@ -102,6 +102,8 @@
   --spacing-fluid-3xl: var(--space-3xl);
   --spacing-fluid-4xl: var(--space-4xl);
   --spacing-fluid-5xl: var(--space-5xl);
+
+  --curly-arrow: url("/curly-arrow.svg");
 }
 
 :root {
@@ -114,6 +116,21 @@
   background-color: var(--color-ivory);
 
   /* scrollbar-gutter: stable both-edges; */
+}
+
+.blob-1 {
+  aspect-ratio: 1.5 / 1;
+  clip-path: shape(from 17.18% 35.28%,curve to 49.78% 20.13% with 29.12% 12.02%,curve to 73.66% 45.44% with 70.44% 28.23%,curve to 62.11% 66.85% with 76.88% 62.65%,curve to 26.29% 64.79% with 47.34% 71.05%,curve to 17.18% 35.28% with 5.23% 58.54%);
+}
+
+.blob-2 {
+  aspect-ratio: 1.5 / 1;
+  clip-path: shape(from 37.82% 60.83%,curve to 34.21% 32.20% with 23.33% 53.37%,curve to 69.44% 27.75% with 45.08% 11.04%,curve to 73.05% 56.38% with 93.79% 44.47%,curve to 37.82% 60.83% with 52.31% 68.29%);
+}
+
+.blob-3 {
+  aspect-ratio: 1.5 / 1;
+  clip-path: shape(from 85.77% 53.86%,curve to 59.44% 78.35% with 81.59% 79.67%,curve to 28.91% 61.65% with 37.28% 77.02%,curve to 33.28% 37.72% with 20.53% 46.28%,curve to 67.98% 28.60% with 46.03% 29.16%,curve to 85.77% 53.86% with 89.94% 28.04%);
 }
 
 .stamp {

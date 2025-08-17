@@ -5,7 +5,9 @@ import type { Route } from "../routes/+types/rsvp";
 export default function Rsvp() {
   return (
     <>
-      <div className="bg-stone-100 border-3 border-double w-full mt-fluid-2xl">
+      <div className="text-fluid-xl/(--spacing-fluid-xl) font-handwritten">Let us know you're coming!</div>
+      <div className="size-16 bg-sage-500 mask-(--curly-arrow) mask-no-repeat mask-contain -rotate-90 -scale-x-100"></div>
+      <div className="bg-stone-100 border-3 border-double w-full">
         <Form
           method="POST"
           action="search"

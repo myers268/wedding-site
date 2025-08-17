@@ -15,12 +15,12 @@ export default function Home() {
       <img
         src={verticalPostcard}
         alt="Postcard"
-        className="border-3 border-double border-white shadow @min-[32rem]:hidden"
+        className="border-3 border-double border-white shadow @min-[32rem]:hidden my-auto"
       />
       <img
         src={horizontalPostcard}
         alt="Postcard"
-        className="border-3 border-double border-white shadow @max-[32rem]:hidden"
+        className="border-3 border-double border-white shadow @max-[32rem]:hidden my-auto"
       />
     </>
   );

@@ -61,9 +61,13 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <h2 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center">
-        Guests
-      </h2>
+      <div className="relative isolate">
+        <div className="-z-10 absolute inset-0 blob-2 bg-rust-300/35 -scale-[210%] translate-x-8" />
+        <div className="-z-10 absolute inset-0 blob-3 bg-sage-300/60 -scale-200" />
+        <h2 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center z-10">
+          Guests
+        </h2>
+      </div>
       {loaderData.party.map((guest) => (
         <div
           key={guest.fullName}
@@ -72,9 +76,13 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
           {guest.fullName}
         </div>
       ))}
-      <h2 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center">
-        Events
-      </h2>
+      <div className="relative isolate">
+        <div className="-z-10 absolute inset-0 blob-3 bg-rust-300/35 scale-[210%]" />
+        <div className="-z-10 absolute inset-0 blob-2 bg-sage-300/60 scale-[250%] -translate-x-6 translate-y-4" />
+        <h2 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center z-10">
+          Events
+        </h2>
+      </div>
       {loaderData.attendance.map((event) => (
         <div
           key={event.name}
