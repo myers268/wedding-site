@@ -5,17 +5,14 @@ import type { Route } from "../routes/+types/rsvp";
 export default function Rsvp() {
   return (
     <>
-      <div className="bg-stone-100 border-3 border-double w-full">
-        <h1 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center">
-          RSVP
-        </h1>
+      <div className="bg-stone-100 border-3 border-double w-full mt-fluid-2xl">
         <Form
           method="POST"
           action="search"
-          className="grid gap-fluid-xs p-fluid-xs"
+          className="grid gap-fluid-xs p-fluid-xs text-fluid-base"
         >
-          <label className="flex gap-fluid-xs whitespace-nowrap font-light">
-            Name:
+          <label className="grid gap-fluid-xs whitespace-nowrap font-light">
+            <span className="tracking-widest italic">Name:</span>
             <input
               name="name"
               className="outline-none h-fluid-base border-b border-ebony w-full"
@@ -26,7 +23,7 @@ export default function Rsvp() {
             type="submit"
             className="bg-sage-500 text-white p-fluid-xs font-light"
           >
-            Send
+            Search
           </button>
         </Form>
       </div>

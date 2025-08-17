@@ -36,7 +36,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     : error;
 
   return (
-    <div className="bg-stone-100 border-2 border-double w-full max-w-[50ch]">
+    <div className="bg-stone-100 border-3 border-double w-full max-w-[50ch]">
       <div className="grid gap-fluid-xs p-fluid-xs">{errorMessage}</div>
     </div>
   );

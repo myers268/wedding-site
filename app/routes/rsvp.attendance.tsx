@@ -67,7 +67,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
       {loaderData.party.map((guest) => (
         <div
           key={guest.fullName}
-          className="bg-stone-100 border-3 border-double w-full max-w-[50ch] p-fluid-sm font-handwritten"
+          className="bg-stone-100 border-3 border-double w-full max-w-[40rem] p-fluid-sm font-handwritten"
         >
           {guest.fullName}
         </div>
@@ -78,7 +78,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
       {loaderData.attendance.map((event) => (
         <div
           key={event.name}
-          className="grid gap-fluid-sm bg-stone-100 border-3 border-double w-full max-w-[50ch] p-fluid-sm font-light"
+          className="grid gap-fluid-sm bg-stone-100 border-3 border-double w-full max-w-[40rem] p-fluid-sm font-light"
         >
           <div>
             <h3 className="text-fluid-xl">{event.name}</h3>

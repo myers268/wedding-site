@@ -14,7 +14,7 @@ const navigationLinks: Array<{
 
 export default function Layout() {
   return (
-    <div className="@container grid p-fluid-xs gap-fluid-xs max-w-[60rem] w-full mx-auto relative text-stone-800">
+    <div className="@container grid p-fluid-xs max-w-[60rem] w-full mx-auto relative text-stone-800">
       <nav className="text-fluid-base sticky top-fluid-xs bg-stone-100 p-fluid-xs pt-fluid-sm border-3 border-double">
         {/* Desktop navigation - visible on larger screens */}
         <ul className="@max-[32rem]:hidden flex flex-wrap justify-around *:grow *:max-w-min font-light">
