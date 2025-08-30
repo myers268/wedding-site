@@ -1,15 +1,13 @@
+import { Link } from "react-router";
+
 export default function Registry() {
   return (
     <div className="grid grid-cols-[min-content_1fr] gap-fluid-sm pt-fluid-sm">
-      <div
-        className="text-fluid-3xl font-extralight tracking-[0.5em] text-sage-700 text-shadow-2xs text-shadow-sage-300/50"
-        style={{ writingMode: "vertical-lr" }}
-      >
-        REGISTRY
-      </div>
-      <div />
-      <div className="col-span-2">
-      </div>
+      <Link to="https://www.target.com/gift-registry/gift-giver?registryId=804f7ef0-5fdd-11f0-b292-1d3dfaab4bde&type=WEDDING">
+        Target
+      </Link>
+      <Link to="https://www.crateandbarrel.com/gift-registry/julia-wygant/r7363726">Crate & Barrel</Link>
+      <Link to="https://www.amazon.com/wedding/registry/23PL3HHJM6V38">Amazon</Link>
     </div>
   );
 }

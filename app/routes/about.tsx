@@ -8,21 +8,16 @@ export default function About() {
           Us
         </h2>
         {/* <div className="px-fluid-xs"> */}
-        <div className="grid *:[grid-area:1/1] max-w-8/12 mx-auto">
-          <div className="rotate-6 frame before:bg-white drop-shadow-sm drop-shadow-sage-700/20">
-            <img
-              src="/hero2.jpeg"
-              className="aspect-[4/3] object-cover size-full"
-            />
-          </div>
-          <div className="frame before:bg-white drop-shadow-sm drop-shadow-sage-700/20">
+        <div className="grid *:[grid-area:1/1] place-items-center *:first:rotate-1 p-fluid-xs">
+          <div className="bg-white max-w-md p-fluid-xs pb-fluid-xl shadow">
             <img
               src="/hero.jpeg"
-              className="aspect-[4/3] object-cover size-full"
+              className="aspect-[4/3] object-cover size-full border border-stone-900/5"
+              // className="aspect-[4/3] object-cover size-full border border-stone-900/5 mask-radial-[100%_100%] mask-radial-from-85% mask-radial-to-120% mask-radial-at-bottom-right"
             />
           </div>
         </div>
-        <div className="p-fluid-xs max-w-[100ch] mx-auto text-lg">
+        <div className="p-fluid-xs max-w-[100ch] mx-auto text-lg text-justify">
           Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque
           faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi
           pretium tellus duis convallis. Tempus leo eu aenean sed diam urna

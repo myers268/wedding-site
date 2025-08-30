@@ -18,7 +18,7 @@ export default function Timeline() {
       <div className="flex flex-col items-center">
         <div className="flex-1 bg-sage-500 w-[2px]" />
       </div>
-      <div className="text-fluid-base grid grid-cols-subgrid col-start-2 col-span-2 gap-fluid-xs justify-start min-h-[calc(100dvh-var(--spacing-fluid-xl)*2)] auto-rows-min">
+      <div className="text-fluid-base font-light grid grid-cols-subgrid col-start-2 col-span-2 gap-fluid-xs justify-start min-h-[calc(100dvh-var(--spacing-fluid-xl)*2)] auto-rows-min">
         <div className="font-semibold font-handwritten whitespace-nowrap">
           5:30 PM
         </div>
