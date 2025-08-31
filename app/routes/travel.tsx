@@ -1,9 +1,16 @@
 import { Link } from "react-router";
+import HotelMap from "#app/components/hotel-map";
 
 export default function Travel() {
   return (
-    <div className="grid">
+    <div className="grid gap-fluid-2xs">
       <h1>Where to stay</h1>
+      
+      <div>
+        <h2>Hotel Locations</h2>
+        <HotelMap />
+      </div>
+
       <h2>Hotels</h2>
       <div>
         <Link to="https://www.hilton.com/en/hotels/dcanmgi-hilton-garden-inn-washington-dc-us-capitol/?SEO_id=GMB-AMER-GI-DCANMGI&y_source=1_MjA4MjE4Ni03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D">
