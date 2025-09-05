@@ -11,6 +11,7 @@ const googleCloudApiKey = alchemy.secret(process.env.GOOGLE_CLOUD_API_KEY);
 
 const database = await D1Database("db", {
   name: "registry-store",
+  adopt: true,
   migrationsDir: "./migrations",
 });
 
