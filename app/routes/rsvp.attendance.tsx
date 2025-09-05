@@ -1,4 +1,4 @@
-import { redirect, useFetcher } from "react-router";
+import { redirect, useFetcher, type AppLoadContext } from "react-router";
 import type { Route } from "./+types/rsvp.attendance";
 
 import {
@@ -34,16 +34,35 @@ export async function action({ request, context }: Route.ActionArgs) {
   return null;
 }
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+async function getGuest(
+  request: Request<unknown, CfProperties<unknown>>,
+  db: AppLoadContext["cloudflare"]["db"]
+) {
+  const name = new URL(request.url).searchParams.get("name");
+
+  if (name !== null) {
+    const guest = await getPrimaryGuestByFullName(db, name).catch(() => {
+      // TODO: Create new guest + party
+      return null as any;
+    });
+    return guest;
+  }
+
   const guestName = await getUserSession(request);
 
   if (!guestName) {
     throw redirect("/rsvp/search");
   }
 
+  const guest = await getPrimaryGuestByFullName(db, guestName);
+  return guest;
+}
+
+export async function loader({ request, context }: Route.LoaderArgs) {
   const db = context.cloudflare.db;
 
-  const guest = await getPrimaryGuestByFullName(db, guestName);
+  const guest = await getGuest(request, db);
+
   const party = await getPartyBytGuestId(db, guest.partyId!); // TODO: Handle case where partyId is null
   const attendance = await getEventAttendanceByGuestIds(
     db,

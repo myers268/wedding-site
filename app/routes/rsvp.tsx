@@ -41,7 +41,7 @@ export default function Rsvp() {
       </div>
       <div className="bg-stone-100 border-3 border-double w-full">
         <Form
-          method="POST"
+          method="GET"
           action="search"
           className="grid gap-fluid-xs p-fluid-xs text-fluid-base font-light sm:font-extralight"
         >
@@ -51,6 +51,7 @@ export default function Rsvp() {
               name="name"
               className="outline-none h-fluid-base border-b border-ebony w-full"
               autoComplete="name"
+              required
             />
           </label>
           <button
