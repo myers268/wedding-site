@@ -5,10 +5,9 @@ const navigationLinks: Array<{
   label: string;
 }> = [
   { href: "/", label: "Home" },
-  { href: "/rsvp", label: "RSVP" },
-  { href: "/about", label: "About" },
-  { href: "/timeline", label: "Timeline" },
-  { href: "/registry", label: "Registry" },
+  { href: "/rsvp", label: "RSVP & Registry" },
+  // { href: "/about", label: "About" },
+  // { href: "/timeline", label: "Timeline" },
   { href: "/travel", label: "Travel & Stay" },
 ];
 

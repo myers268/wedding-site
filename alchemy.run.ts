@@ -3,7 +3,11 @@
 import alchemy from "alchemy";
 import { D1Database, ReactRouter, WranglerJson } from "alchemy/cloudflare";
 
-const app = await alchemy("wedding-site");
+const app = await alchemy("wedding-site", {
+  password: process.env.SECRET_PASSPHRASE,
+});
+
+const googleCloudApiKey = alchemy.secret(process.env.GOOGLE_CLOUD_API_KEY);
 
 const database = await D1Database("db", {
   name: "registry-store",
@@ -17,6 +21,7 @@ export const worker = await ReactRouter("wedding-site", {
   },
   bindings: {
     DB: database,
+    GOOGLE_CLOUD_API_KEY: googleCloudApiKey,
   },
 });
 
