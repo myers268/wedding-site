@@ -32,7 +32,7 @@ export default function Layout() {
         {/* Mobile hamburger menu - visible on smaller screens */}
         <div className="@min-[32rem]:hidden">
           <button
-            className="flex items-center gap-fluid-xs font-light pb-1"
+            className="flex items-center gap-fluid-xs pb-1"
             popoverTarget="mobile-menu"
           >
             <svg

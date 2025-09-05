@@ -90,10 +90,10 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
         >
           <div>
             <h3 className="text-fluid-xl">{event.name}</h3>
-            <div className="text-fluid-sm italic font-extralight">
+            <div className="text-fluid-sm italic font-light sm:font-extralight">
               {new Date(event.timestamp).toLocaleString()}
             </div>
-            <div className="text-fluid-sm italic font-extralight">
+            <div className="text-fluid-sm italic font-light sm:font-extralight">
               {event.location}
             </div>
           </div>

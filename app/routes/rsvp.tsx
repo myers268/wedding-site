@@ -43,9 +43,9 @@ export default function Rsvp() {
         <Form
           method="POST"
           action="search"
-          className="grid gap-fluid-xs p-fluid-xs text-fluid-base"
+          className="grid gap-fluid-xs p-fluid-xs text-fluid-base font-light sm:font-extralight"
         >
-          <label className="grid gap-fluid-xs whitespace-nowrap font-light">
+          <label className="grid gap-fluid-xs whitespace-nowrap">
             <span className="tracking-widest italic">Name:</span>
             <input
               name="name"
@@ -55,7 +55,7 @@ export default function Rsvp() {
           </label>
           <button
             type="submit"
-            className="bg-sage-500 text-white p-fluid-xs font-light"
+            className="bg-sage-500 text-white p-fluid-xs"
           >
             Search
           </button>
