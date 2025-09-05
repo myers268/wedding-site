@@ -6,9 +6,11 @@ import {
   getPrimaryGuestByFullName,
   getPartyBytGuestId,
   updateGuestAttendance,
+  writeSingleGuest,
 } from "#services/guests";
 import { getUserSession } from "#services/session";
 import { z } from "zod/v4";
+import { EVENTS } from "../db";
 
 const ATTENDING = "attending";
 const GUEST = "guestId";
@@ -41,9 +43,12 @@ async function getGuest(
   const name = new URL(request.url).searchParams.get("name");
 
   if (name !== null) {
-    const guest = await getPrimaryGuestByFullName(db, name).catch(() => {
-      // TODO: Create new guest + party
-      return null as any;
+    const guest = await getPrimaryGuestByFullName(db, name).catch(async () => {
+      const { guest } = await writeSingleGuest(db, name, [
+        EVENTS.INDIANA_SHOWER,
+        EVENTS.WASHINGTON_SHOWER,
+      ]);
+      return guest;
     });
     return guest;
   }

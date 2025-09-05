@@ -1,31 +1,7 @@
-import { and, eq, inArray, or } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import type { Database } from "#db/index";
 import * as schema from "#db/schema";
 import { lower, type AttendanceStatus } from "#db/schema";
-
-// export type Guest = {
-//   fullName: string,
-//   attendance: EventAttendance[]
-// }
-
-// export type EventAttendance = {
-//   event: Event;
-//   attending: boolean;
-// }
-
-// export type Event = {
-//   name: string;
-//   location: string;
-//   timestamp: number,
-//   description: string;
-// }
-
-// export type PrimaryGuest = Guest & {
-//   additionalGuests: {
-//     count: number,
-//     guests: Guest[]
-//   }
-// }
 
 export interface GuestNotFoundError {
   name: "guest_not_found";
@@ -140,4 +116,48 @@ export async function updateGuestAttendance(
       target: [schema.eventAttendance.guestId, schema.eventAttendance.eventId],
       set: { attending: update.attending },
     });
+}
+
+export async function writeSingleGuest(
+  db: Database,
+  name: string,
+  events: string[]
+) {
+  // Create a new party with the provided name
+  const [newParty] = await db
+    .insert(schema.party)
+    .values({ name })
+    .returning();
+
+  // Create a new guest with the provided name, linked to the party
+  const [newGuest] = await db
+    .insert(schema.guest)
+    .values({
+      fullName: name,
+      isPrimary: true,
+      isKid: false,
+      partyId: newParty.id,
+    })
+    .returning();
+
+  // Get the events by name
+  const eventRecords = await db
+    .select()
+    .from(schema.event)
+    .where(inArray(schema.event.name, events));
+
+  // Create attendance records for each event
+  const attendanceValues = eventRecords.map(event => ({
+    guestId: newGuest.id,
+    eventId: event.id,
+    attending: "UNKNOWN" as AttendanceStatus,
+  }));
+
+  if (attendanceValues.length > 0) {
+    await db
+      .insert(schema.eventAttendance)
+      .values(attendanceValues);
+  }
+
+  return { party: newParty, guest: newGuest };
 }
