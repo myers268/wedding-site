@@ -1,0 +1,1 @@
+ALTER TABLE `guest` ADD `user_entered` integer DEFAULT false NOT NULL;

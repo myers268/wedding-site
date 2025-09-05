@@ -40,6 +40,9 @@ export const guest = sqliteTable(
     isKid: integer("is_kid", { mode: "boolean" })
       .notNull()
       .default(false),
+    userEntered: integer("user_entered", { mode: "boolean" })
+      .notNull()
+      .default(false),
     partyId: integer("party_id"),
   },
   (table) => [

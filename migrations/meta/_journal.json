@@ -36,6 +36,13 @@
       "when": 1757053864117,
       "tag": "0005_many_rage",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1757084426684,
+      "tag": "0006_sour_baron_strucker",
+      "breakpoints": true
     }
   ]
 }

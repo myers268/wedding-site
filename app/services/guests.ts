@@ -62,7 +62,6 @@ export async function getEventAttendanceByGuestIds(
   db: Database,
   guestIds: number[]
 ): Promise<EventAttendanceWithGuests[]> {
-  const events = await db.select().from(schema.event);
   const attendanceRecords = await db
     .select()
     .from(schema.eventAttendance)
@@ -70,30 +69,31 @@ export async function getEventAttendanceByGuestIds(
     .innerJoin(
       schema.guest,
       eq(schema.eventAttendance.guestId, schema.guest.id)
+    )
+    .innerJoin(
+      schema.event,
+      eq(schema.eventAttendance.eventId, schema.event.id)
     );
 
   const attendanceMap: Record<number, EventAttendanceWithGuests> = {};
 
-  for (const event of events) {
-    attendanceMap[event.id] = {
-      id: event.id,
-      name: event.name,
-      location: event.location,
-      timestamp: event.timestamp,
-      description: event.description,
-      attendance: [],
-    };
-  }
-
   for (const record of attendanceRecords) {
-    const eventAttendance = attendanceMap[record.event_attendance.eventId];
-    if (eventAttendance) {
-      eventAttendance.attendance.push({
-        id: record.guest.id,
-        fullName: record.guest.fullName,
-        attending: record.event_attendance.attending as AttendanceStatus,
-      });
+    if (!attendanceMap[record.event.id]) {
+      attendanceMap[record.event.id] = {
+        id: record.event.id,
+        name: record.event.name,
+        location: record.event.location,
+        timestamp: record.event.timestamp,
+        description: record.event.description,
+        attendance: [],
+      };
     }
+
+    attendanceMap[record.event.id].attendance.push({
+      id: record.guest.id,
+      fullName: record.guest.fullName,
+      attending: record.event_attendance.attending as AttendanceStatus,
+    });
   }
 
   return Object.values(attendanceMap);
@@ -137,6 +137,7 @@ export async function writeSingleGuest(
       isPrimary: true,
       isKid: false,
       partyId: newParty.id,
+      userEntered: true,
     })
     .returning();
 

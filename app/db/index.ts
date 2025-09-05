@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/d1";
-import { inArray } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import * as schema from "./schema";
 import { importGuestsFromCsv } from "./csv-importer";
 
@@ -31,7 +31,7 @@ export type Database = ReturnType<typeof createDb>;
 // Utility functions for seeding data
 export async function seedEvents(db: Database) {
   const existingEvents = await db.select().from(schema.event);
-  const existingEventNames = new Set(existingEvents.map(event => event.name));
+  const existingEventNames = new Set(existingEvents.map((event) => event.name));
 
   const eventsToInsert = [
     {
@@ -58,7 +58,7 @@ export async function seedEvents(db: Database) {
     //   timestamp: new Date(2026, 0, 1, 18, 30, 0).getTime(),
     //   description: "The District Church Ministry Center",
     // }
-  ].filter(event => !existingEventNames.has(event.name));
+  ].filter((event) => !existingEventNames.has(event.name));
 
   if (eventsToInsert.length > 0) {
     await db.insert(schema.event).values(eventsToInsert);
@@ -81,7 +81,10 @@ export async function linkGuestsToEvents(db: Database, eventNames: string[]) {
     .select()
     .from(schema.event)
     .where(inArray(schema.event.name, eventNames));
-  const guests = await db.select().from(schema.guest);
+  const guests = await db
+    .select()
+    .from(schema.guest)
+    .where(eq(schema.guest.userEntered, false));
   const existingAttendance = await db.select().from(schema.eventAttendance);
 
   const existingPairs = new Set(
