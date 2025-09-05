@@ -31,28 +31,35 @@ export async function importGuestsFromCsv(db: Database, csvContent: string) {
   
   // Group guests by party, handling the "-" rule
   const parties = new Map<string, CsvRow[]>();
+  let currentPartyKey = '';
   let currentPartyName = '';
+  let partyCounter = 0;
   
   for (const row of rows) {
     if (row.partyName === '-') {
-      // Use the previous party name
+      // Use the previous party name and key
       if (!currentPartyName) {
         throw new Error('Found "-" party name without a previous party');
       }
       row.partyName = currentPartyName;
     } else {
-      // Update current party name
+      // New party name - create a unique key
       currentPartyName = row.partyName;
+      currentPartyKey = `${row.partyName}_${partyCounter}`;
+      partyCounter++;
     }
     
-    if (!parties.has(row.partyName)) {
-      parties.set(row.partyName, []);
+    if (!parties.has(currentPartyKey)) {
+      parties.set(currentPartyKey, []);
     }
-    parties.get(row.partyName)!.push(row);
+    parties.get(currentPartyKey)!.push(row);
   }
   
   // Insert parties and guests into database
-  for (const [partyName, guests] of parties) {
+  for (const [, guests] of parties) {
+    // Use the original party name (remove the unique suffix)
+    const partyName = guests[0].partyName;
+    
     // Create party
     const [party] = await db
       .insert(schema.party)

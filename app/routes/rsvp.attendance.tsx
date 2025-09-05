@@ -73,7 +73,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
           key={guest.fullName}
           className="bg-stone-100 border-3 border-double w-full max-w-[40rem] p-fluid-sm font-handwritten"
         >
-          {guest.fullName}
+          {guest.fullName ?? "Guest"}
         </div>
       ))}
       <div className="relative isolate">
