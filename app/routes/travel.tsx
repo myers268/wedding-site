@@ -88,7 +88,7 @@ export default function Travel({ loaderData }: Route.ComponentProps) {
                 key={index}
                 className="bg-stone-100 border-3 border-double p-fluid-2xs"
               >
-                <Link to={loc.url}>{loc.name}</Link>
+                <Link className="block" to={loc.url}>{loc.name}</Link>
               </li>
             ))}
         </ul>

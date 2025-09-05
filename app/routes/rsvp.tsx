@@ -16,17 +16,17 @@ export default function Rsvp() {
 
         <ul className="text-fluid-base italic font-light sm:font-extralight grid gap-fluid-2xs">
           <li className="bg-stone-100 border-3 border-double p-fluid-2xs">
-            <Link to="https://www.target.com/gift-registry/gift-giver?registryId=804f7ef0-5fdd-11f0-b292-1d3dfaab4bde&type=WEDDING">
+            <Link className="block" to="https://www.target.com/gift-registry/gift-giver?registryId=804f7ef0-5fdd-11f0-b292-1d3dfaab4bde&type=WEDDING">
               Target
             </Link>
           </li>
           <li className="bg-stone-100 border-3 border-double p-fluid-2xs">
-            <Link to="https://www.crateandbarrel.com/gift-registry/julia-wygant/r7363726">
+            <Link className="block" to="https://www.crateandbarrel.com/gift-registry/julia-wygant/r7363726">
               Crate & Barrel
             </Link>
           </li>
           <li className="bg-stone-100 border-3 border-double p-fluid-2xs">
-            <Link to="https://www.amazon.com/wedding/registry/23PL3HHJM6V38">
+            <Link className="block" to="https://www.amazon.com/wedding/registry/23PL3HHJM6V38">
               Amazon
             </Link>
           </li>
