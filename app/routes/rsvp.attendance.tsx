@@ -111,7 +111,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                   }}
                 >
                   <span className="break-words min-w-0 mr-auto">
-                    {guest.fullName}
+                    {guest.fullName ?? "Guest"}
                   </span>
                   <label className="group flex gap-fluid-2xs items-center">
                     <input

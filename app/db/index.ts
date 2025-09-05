@@ -1,4 +1,5 @@
 import { drizzle } from "drizzle-orm/d1";
+import { inArray } from "drizzle-orm";
 import * as schema from "./schema";
 import { importGuestsFromCsv } from "./csv-importer";
 
@@ -10,6 +11,7 @@ export async function createDbWithSeed(d1Database: D1Database) {
   const db = createDb(d1Database);
   await seedEvents(db);
   await seedGuests(db);
+  await linkGuestsToEvents(db, ["Wedding", "Indiana Wedding Shower"]);
   return db;
 }
 
@@ -59,58 +61,28 @@ export async function seedGuests(db: Database) {
   );
 }
 
-export async function seedGuestsOld(db: Database) {
-  const existingGuests = await db.select().from(schema.guest);
+export async function linkGuestsToEvents(db: Database, eventNames: string[]) {
+  // Get only the specified events from the database
+  const events = await db.select().from(schema.event).where(
+    inArray(schema.event.name, eventNames)
+  );
+  const guests = await db.select().from(schema.guest);
+  const existingAttendance = await db.select().from(schema.eventAttendance);
 
-  if (existingGuests.length === 0) {
-    const [zargerParty] = await db
-      .insert(schema.party)
-      .values({
-        name: "Zargers",
-      })
-      .returning();
+  const existingPairs = new Set(
+    existingAttendance.map(record => `${record.guestId}-${record.eventId}`)
+  );
 
-    await db.insert(schema.guest).values([
-      {
-        fullName: "Colby Zarger",
-        isPrimary: true,
-        partyId: zargerParty.id,
-      },
-      {
-        fullName: "Sally Tucker",
-        isPrimary: true,
-        partyId: zargerParty.id,
-      },
-    ]);
-
-    const [shaheenParty] = await db
-      .insert(schema.party)
-      .values({
-        name: "Phil Shaheen",
-      })
-      .returning();
-
-    await db.insert(schema.guest).values({
-      fullName: "Phil Shaheen",
-      isPrimary: true,
-      partyId: shaheenParty.id,
-    });
-
-    // Create default attendance records for all events
-    const events = await db.select().from(schema.event);
-    const guests = await db.select().from(schema.guest);
-
-    const attendanceRecords = [];
-    for (const guest of guests) {
-      for (const event of events) {
-        attendanceRecords.push({
+  for (const guest of guests) {
+    for (const event of events) {
+      const pairKey = `${guest.id}-${event.id}`;
+      if (!existingPairs.has(pairKey)) {
+        await db.insert(schema.eventAttendance).values({
           guestId: guest.id,
           eventId: event.id,
           attending: "UNKNOWN",
-        });
+        }).onConflictDoNothing();
       }
     }
-
-    await db.insert(schema.eventAttendance).values(attendanceRecords);
   }
 }

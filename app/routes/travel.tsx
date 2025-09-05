@@ -80,7 +80,7 @@ export default function Travel({ loaderData }: Route.ComponentProps) {
         <h2 className="font-handwritten text-balance text-center text-fluid-xl">
           Hotels, listed from West to East
         </h2>
-        <ul className="text-fluid-base italic font-light sm:font-extralight grid gap-fluid-2xs">
+        <ul className="text-fluid-base italic font-light sm:font-extralight grid gap-fluid-2xs w-full max-w-[40rem] mx-auto">
           {locations
             .filter((loc) => loc.type === "hotel")
             .map((loc, index) => (
