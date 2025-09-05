@@ -1,12 +1,18 @@
 {
-  "name": "wedding-site",
+  "name": "wedding-site-wedding-site-prd",
   "main": "build/server/index.js",
-  "compatibility_date": "2025-08-10",
+  "compatibility_date": "2025-08-26",
   "compatibility_flags": [
     "nodejs_compat",
     "nodejs_compat_populate_process_env"
   ],
-  "assets": { "directory": "build/client", "binding": "ASSETS" },
+  "assets": {
+    "directory": "build/client",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "STAGE": "prd"
+  },
   "d1_databases": [
     {
       "binding": "DB",

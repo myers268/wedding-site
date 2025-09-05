@@ -35,7 +35,7 @@ export default function Rsvp() {
       
       <div className="grid grid-flow-col place-items-center gap-fluid-sm mx-auto">
         <span className="text-balance text-fluid-xl/(--spacing-fluid-xl) font-handwritten">
-          Let us know you're coming!
+          Let us know if you're coming!
         </span>
         <div className="size-16 bg-sage-700 mask-(--curly-arrow) mask-no-repeat mask-contain -rotate-90 -scale-x-100"></div>
       </div>

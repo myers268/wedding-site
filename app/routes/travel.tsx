@@ -110,7 +110,7 @@ export default function Travel({ loaderData }: Route.ComponentProps) {
         We recommend flying into DCA since you can take a quick metro ride from
         the airport into the city. However, if you want to explore all your
         options, you can also check out IAD or BWI — just know that both of
-        these airports are a roughly one hour commute from D.C.
+        these airports are roughly a one hour commute from D.C.
       </p>
     </div>
   );

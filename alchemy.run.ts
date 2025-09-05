@@ -1,7 +1,12 @@
 /// <reference types="@types/node" />
 
 import alchemy from "alchemy";
-import { D1Database, ReactRouter, WranglerJson } from "alchemy/cloudflare";
+import {
+  CustomDomain,
+  D1Database,
+  ReactRouter,
+  WranglerJson,
+} from "alchemy/cloudflare";
 
 const app = await alchemy("wedding-site", {
   password: process.env.SECRET_PASSPHRASE,
@@ -23,10 +28,20 @@ export const worker = await ReactRouter("wedding-site", {
   bindings: {
     DB: database,
     GOOGLE_CLOUD_API_KEY: googleCloudApiKey,
+    STAGE: app.stage,
   },
 });
 
-await WranglerJson("wrangler.jsonc", {
+if (app.stage === "prd") {
+  const domain = await CustomDomain("prd-domain", {
+    name: "zackaryandjulia.com",
+    zoneId: process.env.CLOUDFLARE_ZONE_ID,
+    workerName: worker.name,
+    adopt: true,
+  });
+}
+
+await WranglerJson({
   worker,
 });
 

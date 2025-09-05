@@ -23,7 +23,7 @@
 	"dependencies": {
 		"@epic-web/invariant": "^1.0.0",
 		"@react-google-maps/api": "^2.20.7",
-		"alchemy": "^0.60.0",
+		"alchemy": "^0.64.0",
 		"drizzle-orm": "^0.44.4",
 		"drizzle-seed": "^0.3.1",
 		"isbot": "^5.1.29",

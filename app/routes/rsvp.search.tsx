@@ -42,6 +42,10 @@ export async function loader({ request, context }: Route.ActionArgs) {
   });
 }
 
+export default function RsvpSearch() {
+  return null;
+}
+
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   const errorMessage = isRouteErrorResponse(error)
     ? error.data
@@ -83,7 +87,10 @@ function ModalDialog({ children, value }: ModalDialogProps) {
       <Button className="text-sage-500 inline underline text-fluid-base">
         {children}
       </Button>
-      <Modal className="fixed top-0 left-0 w-full h-(--visual-viewport-height) isolate z-20 bg-black/[15%] backdrop-blur-xs grid place-items-center p-fluid-sm">
+      <Modal
+        className="fixed top-0 left-0 w-full h-(--visual-viewport-height) isolate z-20 bg-black/[15%] backdrop-blur-xs grid place-items-center p-fluid-sm"
+        isDismissable
+      >
         <Dialog className="bg-stone-100 border-3 border-double p-fluid-sm max-w-[32rem] w-full text-left">
           <div className="grid gap-fluid-sm text-justify">
             <span>
