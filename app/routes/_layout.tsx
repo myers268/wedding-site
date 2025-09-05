@@ -1,4 +1,4 @@
-import { href, NavLink, Outlet } from "react-router";
+import { href, NavLink, Outlet, useLocation } from "react-router";
 
 const navigationLinks: Array<{
   href: Parameters<typeof href>[0];
@@ -12,8 +12,13 @@ const navigationLinks: Array<{
 ];
 
 export default function Layout() {
+  const location = useLocation();
+  const rootRoute = location.pathname.split("/")[1] ?? "home";
+  const pageTitle = navigationLinks.filter(link => link.href === `/${rootRoute}`)[0].label;
+
   return (
     <div className="@container grid p-fluid-xs max-w-[60rem] w-full mx-auto relative text-stone-800">
+      <title>{`${pageTitle} | Zack & Julia`}</title>
       <nav className="text-fluid-base sticky top-fluid-xs bg-stone-100 p-fluid-xs pt-fluid-sm border-3 border-double isolate z-10">
         {/* Desktop navigation - visible on larger screens */}
         <ul className="@max-[32rem]:hidden flex flex-wrap justify-around *:grow *:max-w-min font-light">
