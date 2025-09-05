@@ -11,7 +11,7 @@
 		"typecheck": "react-router typegen && tsc -b",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate-remote": "drizzle-kit migrate",
-		"db:migrate-local": "wrangler d1 migrations apply prd-wedding-store --local",
+		"db:migrate-local": "wrangler d1 migrations apply registry-store --local",
 		"studio:remote": "bunx drizzle-kit studio",
 		"studio:local": "LOCAL_DB_PATH=$(find .alchemy/miniflare/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print0 | xargs -0 ls -t | head -1) drizzle-kit studio --config=drizzle.config.ts"
 	},

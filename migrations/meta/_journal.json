@@ -31,10 +31,10 @@
       "breakpoints": true
     },
     {
-      "idx": 4,
+      "idx": 5,
       "version": "6",
-      "when": 1751742000000,
-      "tag": "0004_add_party_table_and_update_guest_schema",
+      "when": 1757053864117,
+      "tag": "0005_many_rage",
       "breakpoints": true
     }
   ]

@@ -33,7 +33,7 @@ export const guest = sqliteTable(
   "guest",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
-    fullName: text("full_name").notNull().unique(),
+    fullName: text("full_name").unique(),
     isPrimary: integer("is_primary", { mode: "boolean" })
       .notNull()
       .default(true),
