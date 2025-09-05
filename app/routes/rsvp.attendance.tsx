@@ -61,7 +61,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <div className="relative isolate">
+      <div className="relative isolate mt-fluid-sm">
         <div className="-z-10 absolute inset-0 blob-2 bg-rust-300/35 -scale-[210%] translate-x-8" />
         <div className="-z-10 absolute inset-0 blob-3 bg-sage-300/60 -scale-200" />
         <h2 className="text-fluid-3xl/(--spacing-fluid-3xl) font-cursive flex justify-center z-10">
@@ -91,10 +91,13 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
           <div>
             <h3 className="text-fluid-xl">{event.name}</h3>
             <div className="text-fluid-sm italic font-light sm:font-extralight">
-              {new Date(event.timestamp).toLocaleString()}
+              {event.description}
             </div>
             <div className="text-fluid-sm italic font-light sm:font-extralight">
               {event.location}
+            </div>
+            <div className="text-fluid-sm italic font-light sm:font-extralight">
+              {new Date(event.timestamp).toLocaleString()}
             </div>
           </div>
           <ul className="min-w-0 w-full overflow-auto grid gap-2">
