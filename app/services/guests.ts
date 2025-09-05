@@ -77,7 +77,7 @@ type EventAttendanceWithGuests = {
   description: string;
   attendance: {
     id: number;
-    fullName: string;
+    fullName: string | null;
     attending: AttendanceStatus;
   }[];
 };

@@ -19,7 +19,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   });
 
   // Create user session with guest identifier
-  const sessionCookie = await createUserSession(request, guest.fullName);
+  const sessionCookie = await createUserSession(request, guest.fullName!); // TODO: Handle case where fullName is null
 
   throw redirect("/rsvp/attendance", {
     headers: {
