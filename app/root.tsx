@@ -12,7 +12,7 @@ import styles from "./app.css?url";
 
 export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: styles },
-  { rel: "icon", type: "image/x-icon", href: "/public/favicon.ico" }
+  { rel: "icon", type: "image/x-icon", href: "/favicon.ico" }
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
