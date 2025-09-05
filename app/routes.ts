@@ -14,5 +14,6 @@ export default [
     ]),
     // route("/timeline", "routes/timeline.tsx"),
     route("/travel", "routes/travel.tsx"),
+    route("/faqs", "routes/faqs.tsx"),
   ]),
 ] satisfies RouteConfig;

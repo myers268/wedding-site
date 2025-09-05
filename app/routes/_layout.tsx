@@ -9,12 +9,15 @@ const navigationLinks: Array<{
   // { href: "/about", label: "About" },
   // { href: "/timeline", label: "Timeline" },
   { href: "/travel", label: "Travel & Stay" },
+  { href: "/faqs", label: "FAQs" },
 ];
 
 export default function Layout() {
   const location = useLocation();
   const rootRoute = location.pathname.split("/")[1] ?? "home";
-  const pageTitle = navigationLinks.filter(link => link.href === `/${rootRoute}`)[0].label;
+  const pageTitle = navigationLinks.filter(
+    (link) => link.href === `/${rootRoute}`
+  )[0].label;
 
   return (
     <div className="@container grid p-fluid-xs max-w-[60rem] w-full mx-auto relative text-stone-800">
@@ -22,16 +25,17 @@ export default function Layout() {
       <nav className="text-fluid-base sticky top-fluid-xs bg-stone-100 p-fluid-xs pt-fluid-sm border-3 border-double isolate z-10">
         {/* Desktop navigation - visible on larger screens */}
         <ul className="@max-[32rem]:hidden flex flex-wrap justify-around *:grow *:max-w-min font-light">
-          {navigationLinks.map((link) => (
-            <li key={link.href}>
-              <NavLink
-                to={link.href}
-                className="whitespace-nowrap [.active]:underline"
-              >
-                {link.label}
-              </NavLink>
-            </li>
-          ))}
+          {navigationLinks
+            .map((link) => (
+              <li key={link.href}>
+                <NavLink
+                  to={link.href}
+                  className="whitespace-nowrap [.active]:underline"
+                >
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
         </ul>
 
         {/* Mobile hamburger menu - visible on smaller screens */}
@@ -61,19 +65,20 @@ export default function Layout() {
             className="p-fluid-xs backdrop:bg-black/20 backdrop:backdrop-blur-sm animate-in fade-in w-full bg-transparent"
           >
             <ul className="flex flex-col divide-y font-light border-3 border-double bg-stone-100 shadow-md">
-              {navigationLinks.map((link) => (
-                <li key={link.href}>
-                  <NavLink
-                    to={link.href}
-                    className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors whitespace-nowrap [.active]:underline"
-                    onClick={() =>
-                      document.getElementById("mobile-menu")?.hidePopover()
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
-                </li>
-              ))}
+              {navigationLinks
+                .map((link) => (
+                  <li key={link.href}>
+                    <NavLink
+                      to={link.href}
+                      className="block px-fluid-sm py-fluid-xs hover:bg-stone-200 transition-colors whitespace-nowrap [.active]:underline"
+                      onClick={() =>
+                        document.getElementById("mobile-menu")?.hidePopover()
+                      }
+                    >
+                      {link.label}
+                    </NavLink>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
