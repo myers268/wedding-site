@@ -88,11 +88,30 @@ export default function Travel({ loaderData }: Route.ComponentProps) {
                 key={index}
                 className="bg-stone-100 border-3 border-double p-fluid-2xs"
               >
-                <Link className="block" to={loc.url}>{loc.name}</Link>
+                <Link className="block" to={loc.url}>
+                  {loc.name}
+                </Link>
               </li>
             ))}
         </ul>
+        <h2 className="font-handwritten text-balance text-center text-fluid-xl pt-fluid-sm">
+          Airbnbs
+        </h2>
+        <p className="max-w-[40rem] mx-auto">
+          There are lots of good airbnb spots in dc. If you want to go this
+          route, we recommend looking for spots in Capitol Hill, Dupont Circle,
+          Logan Circle, or Brookland.
+        </p>
       </div>
+      <h2 className="font-handwritten text-balance text-center text-fluid-xl pt-fluid-sm">
+        Airports
+      </h2>
+      <p className="max-w-[40rem] mx-auto">
+        We recommend flying into DCA since you can take a quick metro ride from
+        the airport into the city. However, if you want to explore all your
+        options, you can also check out IAD or BWI — just know that both of
+        these airports are a roughly one hour commute from D.C.
+      </p>
     </div>
   );
 }
