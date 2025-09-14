@@ -37,19 +37,19 @@ export async function seedEvents(db: Database) {
     {
       name: EVENTS.WEDDING,
       location: "1340 Quincy Street NE, Washington, D.C. 20017",
-      timestamp: new Date(2026, 0, 2, 16, 30, 0).getTime(),
+      timestamp: new Date(2026, 0, 2, 21, 30, 0).getTime(),
       description: "St Francis Hall",
     },
     {
       name: EVENTS.INDIANA_SHOWER,
       location: "865 E 400 S, Kokomo, IN 46902",
-      timestamp: new Date(2025, 9, 4, 14, 0, 0).getTime(),
-      description: "Abundant Life Church Life Center",
+      timestamp: new Date(2025, 9, 4, 17, 0, 0).getTime(),
+      description: "Open house at Abundant Life Church Life Center until 4 p.m.",
     },
     {
       name: EVENTS.WASHINGTON_SHOWER,
       location: "Longview, WA 98632",
-      timestamp: new Date(2025, 11, 6, 14, 0, 0).getTime(),
+      timestamp: new Date(2025, 11, 6, 17, 0, 0).getTime(),
       description: "",
     },
     // {
@@ -106,4 +106,26 @@ export async function linkGuestsToEvents(db: Database, eventNames: string[]) {
       }
     }
   }
+}
+
+export async function updateEventTime(
+  db: Database,
+  eventName: string,
+  newDate: Date
+): Promise<void> {
+  await db
+    .update(schema.event)
+    .set({ timestamp: newDate.getTime() })
+    .where(eq(schema.event.name, eventName));
+}
+
+export async function updateEventDescription(
+  db: Database,
+  eventName: string,
+  newDescription: string
+): Promise<void> {
+  await db
+    .update(schema.event)
+    .set({ description: newDescription })
+    .where(eq(schema.event.name, eventName));
 }

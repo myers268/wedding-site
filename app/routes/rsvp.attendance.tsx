@@ -121,7 +121,10 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
               {event.location}
             </div>
             <div className="text-fluid-sm italic font-light sm:font-extralight">
-              {new Date(event.timestamp).toLocaleString()}
+              {new Date(event.timestamp).toLocaleString("en-US", {
+                dateStyle: "full",
+                timeStyle: "short",
+              })}
             </div>
           </div>
           <ul className="min-w-0 w-full overflow-auto grid gap-2">
