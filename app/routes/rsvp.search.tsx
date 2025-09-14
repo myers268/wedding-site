@@ -26,7 +26,7 @@ export async function loader({ request, context }: Route.ActionArgs) {
   ).catch((e) => {
     if (e instanceof GuestNotFoundError) {
       throw new Response(
-        "Oops! Make sure you type your name exactly as it is written on your invitation."
+        "Oops! Make sure you type in your full name."
       );
     }
     throw e;

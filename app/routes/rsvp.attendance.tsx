@@ -1,3 +1,4 @@
+import confetti from "canvas-confetti";
 import { redirect, useFetcher, type AppLoadContext } from "react-router";
 import type { Route } from "./+types/rsvp.attendance";
 
@@ -12,28 +13,46 @@ import { getUserSession } from "#services/session";
 import { z } from "zod/v4";
 import { EVENTS } from "../db";
 
-const ATTENDING = "attending";
-const GUEST = "guestId";
-const EVENT = "eventId";
-
 const attendingValues = {
   YES: "YES",
   NO: "NO",
 } as const;
 
-const attendingSchema = z.object({
-  [ATTENDING]: z.enum(Object.values(attendingValues)),
-  [GUEST]: z.coerce.number(),
-  [EVENT]: z.coerce.number(),
+const attendanceDataSchema = z.object({
+  guestId: z.coerce.number(),
+  eventId: z.coerce.number(),
+  attending: z.enum(Object.values(attendingValues)),
 });
+
+function* parseAttendanceUpdates(formData: FormData) {
+  for (const [key, attending] of formData.entries()) {
+    if (key.includes("_")) {
+      const [guestId, eventId] = key.split("_");
+      const parsedUpdate = attendanceDataSchema.parse({
+        guestId,
+        eventId,
+        attending,
+      });
+      yield parsedUpdate;
+    }
+  }
+}
 
 export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
-  const event = attendingSchema.parse(Object.fromEntries(formData.entries()));
+  const db = context.cloudflare.db;
 
-  await updateGuestAttendance(context.cloudflare.db, event);
+  for (const update of parseAttendanceUpdates(formData)) {
+    await updateGuestAttendance(db, update);
+  }
 
   return null;
+}
+
+export async function clientAction() {
+  await confetti({
+    origin: { y: 0.9 },
+  });
 }
 
 async function getGuest(
@@ -107,38 +126,32 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
           Events
         </h2>
       </div>
-      {loaderData.attendance.map((event) => (
-        <div
-          key={event.name}
-          className="grid gap-fluid-sm bg-stone-100 border-3 border-double w-full max-w-[40rem] p-fluid-sm font-light"
-        >
-          <div>
-            <h3 className="text-fluid-xl">{event.name}</h3>
-            <div className="text-fluid-sm italic font-light sm:font-extralight">
-              {event.description}
+      <eventsFetcher.Form method="POST" className="contents">
+        {loaderData.attendance.map((event) => (
+          <div
+            key={event.name}
+            className="grid gap-fluid-sm bg-stone-100 border-3 border-double w-full max-w-[40rem] p-fluid-sm font-light"
+          >
+            <div>
+              <h3 className="text-fluid-xl">{event.name}</h3>
+              <div className="text-fluid-sm italic font-light sm:font-extralight">
+                {event.description}
+              </div>
+              <div className="text-fluid-sm italic font-light sm:font-extralight">
+                {event.location}
+              </div>
+              <div className="text-fluid-sm italic font-light sm:font-extralight">
+                {new Date(event.timestamp).toLocaleString("en-US", {
+                  dateStyle: "full",
+                  timeStyle: "short",
+                })}
+              </div>
             </div>
-            <div className="text-fluid-sm italic font-light sm:font-extralight">
-              {event.location}
-            </div>
-            <div className="text-fluid-sm italic font-light sm:font-extralight">
-              {new Date(event.timestamp).toLocaleString("en-US", {
-                dateStyle: "full",
-                timeStyle: "short",
-              })}
-            </div>
-          </div>
-          <ul className="min-w-0 w-full overflow-auto grid gap-2">
-            {event.attendance.map((guest) => (
-              <li
-                key={guest.id}
-                className="font-handwritten flex gap-fluid-md select-none"
-              >
-                <eventsFetcher.Form
-                  className="contents"
-                  method="POST"
-                  onChange={(event) => {
-                    eventsFetcher.submit(event.currentTarget);
-                  }}
+            <ul className="min-w-0 w-full overflow-auto grid gap-2">
+              {event.attendance.map((guest) => (
+                <li
+                  key={guest.id}
+                  className="font-handwritten flex gap-fluid-md select-none"
                 >
                   <span className="break-words min-w-0 mr-auto">
                     {guest.fullName ?? "Guest"}
@@ -146,8 +159,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                   <label className="group flex gap-fluid-2xs items-center">
                     <input
                       type="radio"
-                      radioGroup="attendance"
-                      name={ATTENDING}
+                      name={`${guest.id}_${event.id}`}
                       value={attendingValues.YES}
                       defaultChecked={
                         guest.attending === "YES" ? true : undefined
@@ -173,8 +185,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                   <label className="group flex gap-fluid-2xs items-center">
                     <input
                       type="radio"
-                      radioGroup="attendance"
-                      name={ATTENDING}
+                      name={`${guest.id}_${event.id}`}
                       value={attendingValues.NO}
                       defaultChecked={
                         guest.attending === "NO" ? true : undefined
@@ -197,26 +208,19 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                     </div>
                     No
                   </label>
-                  <input
-                    className="hidden"
-                    aria-hidden
-                    readOnly
-                    name={GUEST}
-                    value={guest.id}
-                  />
-                  <input
-                    className="hidden"
-                    aria-hidden
-                    readOnly
-                    name={EVENT}
-                    value={event.id}
-                  />
-                </eventsFetcher.Form>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <button
+          type="submit"
+          className="w-full max-w-[40rem] p-fluid-sm bg-sage-500 text-white font-light text-fluid-lg border-3 border-double"
+          disabled={eventsFetcher.state !== "idle"}
+        >
+          Submit
+        </button>
+      </eventsFetcher.Form>
     </>
   );
 }
