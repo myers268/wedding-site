@@ -23,6 +23,11 @@ export async function createDbWithSeed(d1Database: D1Database) {
     EVENTS.INDIANA_SHOWER,
     EVENTS.WASHINGTON_SHOWER,
   ]);
+  await updateEventDescription(
+    db,
+    EVENTS.INDIANA_SHOWER,
+    "Open house at Abundant Life Church Life Center from 1 p.m. – 4 p.m.",
+  )
   return db;
 }
 
@@ -44,7 +49,7 @@ export async function seedEvents(db: Database) {
       name: EVENTS.INDIANA_SHOWER,
       location: "865 E 400 S, Kokomo, IN 46902",
       timestamp: new Date(2025, 9, 4, 17, 0, 0).getTime(),
-      description: "Open house at Abundant Life Church Life Center until 4 p.m.",
+      description: "Open house at Abundant Life Church Life Center from 1 p.m. – 4 p.m.",
     },
     {
       name: EVENTS.WASHINGTON_SHOWER,

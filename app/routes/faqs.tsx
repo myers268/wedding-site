@@ -19,6 +19,15 @@ export default function Faqs() {
         </div>
 
         <div className="grid gap-fluid-2xs">
+          <dt>Will there be a reception?</dt>
+          <dd className="border-l pl-fluid-xs italic">
+            Yes, there will be a brief evening social after the ceremony
+            followed by a reception at St. Francis Hall. We'll bring the dinner,
+            you bring the dancing!
+          </dd>
+        </div>
+
+        <div className="grid gap-fluid-2xs">
           <dt>Is there parking at the venue?</dt>
           <dd className="border-l pl-fluid-xs italic">
             Yes, there is plenty of free parking at the venue. But if you don't
