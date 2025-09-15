@@ -57,9 +57,9 @@ export function Map({ apiKey, locations, children }: MapProps) {
         options={{ mapTypeControl: false }}
       >
         <TransitLayer />
-        {locations.map((loc, index) => (
+        {locations.map((loc) => (
           <Marker
-            key={index}
+            key={loc.name}
             icon={createSVGMarker(loc.type === "hotel" ? "red" : "blue")}
             position={loc.position}
             title={loc.name}

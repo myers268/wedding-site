@@ -9,32 +9,28 @@ import {
 import type { Route } from "./+types/rsvp.search";
 
 import {
-  GuestNotFoundError,
   getPrimaryGuestByFullName,
+  GuestNotFoundError,
+  searchGuestsByName,
 } from "#services/guests";
 import { createUserSession } from "#services/session";
 import { Button, Dialog, DialogTrigger, Modal } from "react-aria-components";
 
-export async function loader({ request, context }: Route.ActionArgs) {
-  const searchParams = new URL(request.url).searchParams;
-  if (!searchParams.has("name")) return;
-  const name = searchParams.get("name") ?? "";
+export async function action({ request, context }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const name = formData.get("name")?.toString() ?? "";
 
   const guest = await getPrimaryGuestByFullName(
     context.cloudflare.db,
     name
   ).catch((e) => {
-    if (e instanceof GuestNotFoundError) {
-      throw new Response(
-        "Oops! Make sure you type in your full name."
-      );
+    if (!(e instanceof GuestNotFoundError)) {
+      console.error(e);
     }
-    throw e;
+    throw new Response("Oops! Make sure you type in your full name.");
   });
 
-  // Create user session with guest identifier
-  const sessionCookie = await createUserSession(request, guest.fullName!); // TODO: Handle case where fullName is null
-
+  const sessionCookie = await createUserSession(request, guest.fullName!);
   throw redirect("/rsvp/attendance", {
     headers: {
       "Set-Cookie": sessionCookie,
@@ -42,8 +38,95 @@ export async function loader({ request, context }: Route.ActionArgs) {
   });
 }
 
-export default function RsvpSearch() {
-  return null;
+export async function loader({ request, context }: Route.ActionArgs) {
+  const searchParams = new URL(request.url).searchParams;
+  if (!searchParams.has("name")) return { results: [] };
+  const name = searchParams.get("name") ?? "";
+
+  // Use FTS to find potential matches
+  const searchResults = await searchGuestsByName(
+    context.cloudflare.db,
+    name
+  ).catch((e) => {
+    console.error(e);
+    throw new Response("Oops! Looks like we hit a snag on that one.");
+  });
+
+  const filteredResults = searchResults.filter(
+    (guest): guest is typeof guest & { fullName: string } =>
+      typeof guest.fullName === "string"
+  );
+
+  if (filteredResults.length === 0) {
+    throw new Response("Oops! Make sure you type in your full name.");
+  }
+
+  // If we found exact primary guest match, redirect immediately
+  const exactMatch = filteredResults.find(
+    (guest) =>
+      guest.fullName?.toLowerCase() === name.toLowerCase() && guest.isPrimary
+  );
+
+  if (exactMatch) {
+    const sessionCookie = await createUserSession(
+      request,
+      exactMatch.fullName!
+    );
+    throw redirect("/rsvp/attendance", {
+      headers: {
+        "Set-Cookie": sessionCookie,
+      },
+    });
+  }
+
+  // Return search results for display
+  return { results: filteredResults };
+}
+
+export default function RsvpSearch({ loaderData }: Route.ComponentProps) {
+  return (
+    <>
+      {loaderData.results.map((guest) => (
+        <Form
+          key={guest.fullName}
+          method="GET"
+          action="/rsvp/attendance"
+          className="contents"
+        >
+          <div
+            ref={(node) => {
+              node?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
+            className="bg-stone-100 border-3 border-double w-full max-w-[40rem] p-fluid-sm font-handwritten"
+          >
+            <input type="hidden" name="name" value={guest.fullName} readOnly />
+            <button
+              type="submit"
+              className="flex justify-between items-center w-full"
+            >
+              {guest.fullName}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </button>
+          </div>
+        </Form>
+      ))}
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

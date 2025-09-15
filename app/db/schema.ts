@@ -109,6 +109,12 @@ export function lower(value: AnySQLiteColumn): SQL {
   return sql`lower(${value})`;
 }
 
+// FTS5 virtual table for guest search
+export const guestFts = sqliteTable("guest_fts", {
+  rowid: integer("rowid").primaryKey(),
+  fullName: text("full_name"),
+});
+
 // Type exports for use in your application
 export type Event = typeof event.$inferSelect;
 export type NewEvent = typeof event.$inferInsert;

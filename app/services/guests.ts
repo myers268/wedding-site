@@ -1,4 +1,4 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import type { Database } from "#db/index";
 import * as schema from "#db/schema";
 import { lower, type AttendanceStatus } from "#db/schema";
@@ -34,7 +34,7 @@ export async function getPrimaryGuestByFullName(db: Database, name: string) {
   return guest;
 }
 
-export async function getPartyBytGuestId(db: Database, partyId: number) {
+export async function getPartyByGuestId(db: Database, partyId: number) {
   const party = await db
     .select()
     .from(schema.guest)
@@ -116,6 +116,30 @@ export async function updateGuestAttendance(
       target: [schema.eventAttendance.guestId, schema.eventAttendance.eventId],
       set: { attending: update.attending },
     });
+}
+
+export async function searchGuestsByName(db: Database, searchTerm: string) {
+  if (!searchTerm.trim()) {
+    return [];
+  }
+
+  const results = await db
+    .select({
+      id: schema.guest.id,
+      fullName: schema.guest.fullName,
+      isPrimary: schema.guest.isPrimary,
+      partyId: schema.guest.partyId,
+      rank: sql<number>`rank`
+    })
+    .from(sql`guest_fts`)
+    .innerJoin(schema.guest, sql`guest.id = guest_fts.rowid`)
+    .where(
+      and(sql`guest_fts MATCH ${searchTerm}`, eq(schema.guest.isPrimary, true))
+    )
+    .orderBy(sql`rank`)
+    .limit(4);
+
+  return results;
 }
 
 export async function writeSingleGuest(

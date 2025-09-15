@@ -83,9 +83,9 @@ export default function Travel({ loaderData }: Route.ComponentProps) {
         <ul className="text-fluid-base italic font-light sm:font-extralight grid gap-fluid-2xs w-full max-w-[40rem] mx-auto">
           {locations
             .filter((loc) => loc.type === "hotel")
-            .map((loc, index) => (
+            .map((loc) => (
               <li
-                key={index}
+                key={loc.name}
                 className="bg-stone-100 border-3 border-double p-fluid-2xs"
               >
                 <Link className="block" to={loc.url}>

@@ -5,7 +5,7 @@ import type { Route } from "./+types/rsvp.attendance";
 import {
   getEventAttendanceByGuestIds,
   getPrimaryGuestByFullName,
-  getPartyBytGuestId,
+  getPartyByGuestId,
   updateGuestAttendance,
   writeSingleGuest,
 } from "#services/guests";
@@ -87,7 +87,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   const guest = await getGuest(request, db);
 
-  const party = await getPartyBytGuestId(db, guest.partyId!); // TODO: Handle case where partyId is null
+  const party = await getPartyByGuestId(db, guest.partyId!); // TODO: Handle case where partyId is null
   const attendance = await getEventAttendanceByGuestIds(
     db,
     party.sort((a) => (a.id === guest.id ? -1 : 1)).map((p) => p.id)

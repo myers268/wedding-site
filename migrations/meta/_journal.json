@@ -43,6 +43,13 @@
       "when": 1757084426684,
       "tag": "0006_sour_baron_strucker",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1757890713076,
+      "tag": "0007_free_christian_walker",
+      "breakpoints": true
     }
   ]
 }
