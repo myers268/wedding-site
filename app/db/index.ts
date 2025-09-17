@@ -23,11 +23,6 @@ export async function createDbWithSeed(d1Database: D1Database) {
     EVENTS.INDIANA_SHOWER,
     EVENTS.WASHINGTON_SHOWER,
   ]);
-  await updateEventDescription(
-    db,
-    EVENTS.INDIANA_SHOWER,
-    "Open house at Abundant Life Church Life Center from 1 p.m. – 4 p.m.",
-  )
   return db;
 }
 

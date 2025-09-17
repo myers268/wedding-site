@@ -1,5 +1,6 @@
 import confetti from "canvas-confetti";
 import { redirect, useFetcher, type AppLoadContext } from "react-router";
+import { toast } from "sonner";
 import type { Route } from "./+types/rsvp.attendance";
 
 import {
@@ -49,7 +50,9 @@ export async function action({ request, context }: Route.ActionArgs) {
   return null;
 }
 
-export async function clientAction() {
+export async function clientAction({ serverAction }: Route.ClientActionArgs) {
+  await serverAction();
+  toast("RSVP updated!");
   await confetti({
     origin: { y: 0.9 },
   });

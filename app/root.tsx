@@ -9,10 +9,11 @@ import {
 
 import type { Route } from "./+types/root";
 import styles from "./app.css?url";
+import { Toaster } from "sonner";
 
 export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: styles },
-  { rel: "icon", type: "image/x-icon", href: "/favicon.ico" }
+  { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -28,6 +29,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            unstyled: true,
+            className:
+              "bg-stone-100 border-3 border-double p-fluid-sm font-handwritten text-fluid-base w-full text-center",
+          }}
+        />
       </body>
     </html>
   );
