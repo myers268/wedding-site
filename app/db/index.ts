@@ -129,3 +129,31 @@ export async function updateEventDescription(
     .set({ description: newDescription })
     .where(eq(schema.event.name, eventName));
 }
+
+export async function deleteGuest(
+  db: Database,
+  guestId: number
+): Promise<boolean> {
+  // Check if guest exists
+  const existingGuest = await db
+    .select()
+    .from(schema.guest)
+    .where(eq(schema.guest.id, guestId))
+    .limit(1);
+
+  if (existingGuest.length === 0) {
+    return false;
+  }
+
+  // Delete event attendance records first (foreign key constraint)
+  await db
+    .delete(schema.eventAttendance)
+    .where(eq(schema.eventAttendance.guestId, guestId));
+
+  // Delete the guest
+  await db
+    .delete(schema.guest)
+    .where(eq(schema.guest.id, guestId));
+
+  return true;
+}
