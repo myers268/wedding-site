@@ -6,7 +6,7 @@ const navigationLinks: Array<{
 }> = [
   { href: "/", label: "Home" },
   { href: "/rsvp", label: "RSVP & Registry" },
-  // { href: "/about", label: "About" },
+  { href: "/about", label: "About" },
   // { href: "/timeline", label: "Timeline" },
   { href: "/travel", label: "Travel & Stay" },
   { href: "/faqs", label: "FAQs" },
