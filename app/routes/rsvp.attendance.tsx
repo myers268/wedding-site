@@ -147,6 +147,7 @@ export default function Attendance({ loaderData }: Route.ComponentProps) {
                 {new Date(event.timestamp).toLocaleString("en-US", {
                   dateStyle: "full",
                   timeStyle: "short",
+                  timeZone: "America/New_York",
                 })}
               </div>
             </div>
