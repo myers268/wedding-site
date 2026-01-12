@@ -97,7 +97,7 @@ export default function Travel({ loaderData }: Route.ComponentProps) {
         <h2 className="font-handwritten text-balance text-center text-fluid-xl pt-fluid-sm">
           Airbnbs
         </h2>
-        <p className="max-w-[40rem] mx-auto">
+        <p className="max-w-[40rem] mx-auto text-justify">
           There are lots of good airbnb spots in dc. If you want to go this
           route, we recommend looking for spots in Capitol Hill, Dupont Circle,
           Logan Circle, or Brookland.
@@ -106,12 +106,32 @@ export default function Travel({ loaderData }: Route.ComponentProps) {
       <h2 className="font-handwritten text-balance text-center text-fluid-xl pt-fluid-sm">
         Airports
       </h2>
-      <p className="max-w-[40rem] mx-auto">
+      <p className="max-w-[40rem] mx-auto text-justify">
         We recommend flying into DCA since you can take a quick metro ride from
         the airport into the city. However, if you want to explore all your
         options, you can also check out IAD or BWI — just know that both of
         these airports are roughly a one hour commute from D.C.
       </p>
+      <div className="relative isolate mx-auto mt-fluid-2xs">
+        <div className="-z-10 absolute inset-0 blob-3 bg-stone-100/60 scale-120 -translate-y-6 -translate-x-16" />
+        <div className="-z-10 absolute inset-0 blob-2 bg-rust-300/35 scale-120 -translate-y-3 translate-x-16" />
+        <div className="-z-10 absolute inset-0 blob-2 bg-sage-300/40 -scale-120 -translate-y-6 translate-x-4" />
+        <h1 className="font-cursive text-fluid-2xl/(--spacing-fluid-3xl) text-balance text-center">
+          What To Do
+        </h1>
+      </div>
+      <h2 className="font-handwritten text-balance text-center text-fluid-xl pt-fluid-sm">
+        Eats & Activities
+      </h2>
+      <p className="max-w-[40rem] mx-auto text-justify">
+        Check the link below for some of our favorite spots to eat, explore, and
+        hang out in our nation's capital!
+      </p>
+      <ul className="text-fluid-base italic font-light sm:font-extralight grid gap-fluid-2xs w-full max-w-[40rem] mx-auto">
+        <li className="bg-stone-100 border-3 border-double p-fluid-2xs">
+          <a href="https://maps.app.goo.gl/Eav32ApDcfKnr71h6">View Places</a>
+        </li>
+      </ul>
     </div>
   );
 }
